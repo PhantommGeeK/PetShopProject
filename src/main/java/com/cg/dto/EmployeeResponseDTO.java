@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class EmployeeResponseDTO {
 
-    private int employeeId;
+    private Integer employeeId;
     private String firstName;
     private String lastName;
     private String position;
@@ -15,7 +15,7 @@ public class EmployeeResponseDTO {
 
     public EmployeeResponseDTO() {}
 
-    public EmployeeResponseDTO(int employeeId, String firstName, String lastName,
+    public EmployeeResponseDTO(Integer employeeId, String firstName, String lastName,
                                 String position, LocalDate hireDate, String phoneNumber,
                                 String email, AdressesResponseDTO address ) {
         this.employeeId = employeeId;
@@ -28,8 +28,8 @@ public class EmployeeResponseDTO {
         this.address = address;
     }
 
-    public int getEmployeeId() { return employeeId; }
-    public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
+    public Integer getEmployeeId() { return employeeId; }
+    public void setEmployeeId(Integer employeeId) { this.employeeId = employeeId; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
