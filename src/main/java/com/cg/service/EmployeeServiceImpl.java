@@ -4,6 +4,7 @@ package com.cg.service;
 
 import com.cg.dto.EmployeeRequestDTO;
 import com.cg.dto.EmployeeResponseDTO;
+import com.cg.dto.SuccessDTO;
 import com.cg.entity.Addresses;
 import com.cg.entity.Employee;
 import com.cg.exception.ResourceNotFoundException;
@@ -22,107 +23,117 @@ import java.util.stream.Collectors;
 @Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+	 @Autowired
+	    private EmployeeRepository employeeRepository;
+	 
+	 @Autowired
+	   	private AddressesRepository addressRepository;
 
-    @Autowired
-    private AddressesRepository addressesRepository;
 
-    // ---------------------- Helper: Entity -> ResponseDTO ----------------------
-    private EmployeeResponseDTO mapToResponseDTO(Employee employee) {
-        Integer addressId = null;
-        String city      = null;
-        String state     = null;
+	 private EmployeeResponseDTO mapToDTO(Employee emp) {
 
-        if (employee.getAddress() != null) {
-            addressId = employee.getAddress().getAddressId();
-            city      = employee.getAddress().getCity();
-            state     = employee.getAddress().getState();
-        }
+	        AddressesResponseDTO addressDTO = new AddressesResponseDTO(
+	                emp.getAddress().getAddressId(),
+	                emp.getAddress().getCity(),
+	                emp.getAddress().getState(),
+	                emp.getAddress().getZipCode()
+	        );
 
-        return new EmployeeResponseDTO(
-        );
+	        return new EmployeeResponseDTO(
+	                emp.getEmployeeId(),
+	                emp.getFirstName(),
+	                emp.getLastName(),
+	                emp.getPosition(),
+	                emp.getHireDate(),
+	                emp.getPhoneNumber(),
+	                emp.getEmail(),
+	                addressDTO
+	        );
+	    }
+	 
+	 
+	 private Employee mapToEntity(EmployeeRequestDTO dto) {
+
+	        Addresses address = addressRepository.findById(dto.getAddressId())
+	                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+
+	        Employee emp = new Employee();
+	        emp.setFirstName(dto.getFirstName());
+	        emp.setLastName(dto.getLastName());
+	        emp.setPosition(dto.getPosition());
+	        emp.setHireDate(dto.getHireDate());
+	        emp.setPhoneNumber(dto.getPhoneNumber());
+	        emp.setEmail(dto.getEmail());
+	        emp.setAddress(address);
+
+	        return emp;
+	    }
+   
+	 @Override
+	    public SuccessDTO createEmployee(EmployeeRequestDTO requestDTO) {
+	        Employee emp = mapToEntity(requestDTO);
+	        employeeRepository.save(emp);
+	        return new SuccessDTO("Employee created successfully");
+	    }
+
+    @Override
+    public EmployeeResponseDTO getEmployeeById(Integer employeeId) {
+    	   Employee emp = employeeRepository.findById(employeeId)
+                   .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+           return mapToDTO(emp);
     }
 
-    // ---------------------- Create ----------------------
     @Override
-    public EmployeeResponseDTO createEmployee(EmployeeRequestDTO requestDTO) {
-        Addresses address = addressesRepository.findById(requestDTO.getAddressId())
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "Address not found with ID: " + requestDTO.getAddressId()));
-
-        Employee employee = new Employee();
-        employee.setFirstName(requestDTO.getFirstName());
-        employee.setLastName(requestDTO.getLastName());
-        employee.setPosition(requestDTO.getPosition());
-        employee.setHireDate(requestDTO.getHireDate());
-        employee.setPhoneNumber(requestDTO.getPhoneNumber());
-        employee.setEmail(requestDTO.getEmail());
-        employee.setAddress(address);
-
-        Employee saved = employeeRepository.save(employee);
-        return mapToResponseDTO(saved);
-    }
-
-    // ---------------------- Get By ID ----------------------
-    @Override
-    @Transactional(readOnly = true)
-    public EmployeeResponseDTO getEmployeeById(int employeeId) {
-        Employee employee = employeeRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "Employee not found with ID: " + employeeId));
-        return mapToResponseDTO(employee);
-    }
-
-    // ---------------------- Get All ----------------------
-    @Override
-    @Transactional(readOnly = true)
     public List<EmployeeResponseDTO> getAllEmployees() {
         return employeeRepository.findAll()
-            .stream()
-            .map(this::mapToResponseDTO)
-            .collect(Collectors.toList());
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
-
-    // ---------------------- Get By Position ----------------------
+    
+    
     @Override
-    @Transactional(readOnly = true)
-    public List<EmployeeResponseDTO> getEmployeesByPosition(String position) {
-        return employeeRepository.findByPositionIgnoreCase(position)
-            .stream()
-            .map(this::mapToResponseDTO)   // ✅ perfectly fine
-            .collect(Collectors.toList());
+    public  List<EmployeeResponseDTO> getEmployeesByPosition(String position){
+    	return employeeRepository.findByPosition(position)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    	
     }
 
-    // ---------------------- Update ----------------------
     @Override
-    public EmployeeResponseDTO updateEmployee(int employeeId, EmployeeRequestDTO requestDTO) {
-        Employee existing = employeeRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "Employee not found with ID: " + employeeId));
+    public SuccessDTO updateEmployee(int employeeId, EmployeeRequestDTO requestDTO) {
 
-        Addresses address = addressesRepository.findById(requestDTO.getAddressId())
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "Address not found with ID: " + requestDTO.getAddressId()));
+        Employee emp = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
 
-        existing.setFirstName(requestDTO.getFirstName());
-        existing.setLastName(requestDTO.getLastName());
-        existing.setPosition(requestDTO.getPosition());
-        existing.setHireDate(requestDTO.getHireDate());
-        existing.setPhoneNumber(requestDTO.getPhoneNumber());
-        existing.setEmail(requestDTO.getEmail());
-        existing.setAddress(address);
+        Address address = addressRepository.findById(requestDTO.getAddressId())
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
-        Employee updated = employeeRepository.save(existing);
-        return mapToResponseDTO(updated);
+        emp.setFirstName(requestDTO.getFirstName());
+        emp.setLastName(requestDTO.getLastName());
+        emp.setPosition(requestDTO.getPosition());
+        emp.setHireDate(requestDTO.getHireDate());
+        emp.setPhoneNumber(requestDTO.getPhoneNumber());
+        emp.setEmail(requestDTO.getEmail());
+        emp.setAddress(address);
+        
+        employeeRepository.save(emp);
+
+        return new SuccessDTO("Employee updated successfully");
     }
 
-    // ---------------------- Delete ----------------------
+   
+    
     @Override
-    public void deleteEmployee(int employeeId) {
-        Employee existing = employeeRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "Employee not found with ID: " + employeeId));
-        employeeRepository.delete(existing);
+    public SuccessDTO deleteEmployee(int employeeID) {
+    	Employee emp = employeeRepository.findById(employeeID)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+    			employeeRepository.delete(emp);
+    			return new SuccessDTO("Emplolyee deleted successfully");
+    			
+    	
     }
+    
+   
 }

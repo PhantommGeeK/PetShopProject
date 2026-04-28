@@ -4,19 +4,20 @@ import java.util.List;
 
 import com.cg.dto.EmployeeRequestDTO;
 import com.cg.dto.EmployeeResponseDTO;
+import com.cg.dto.SuccessDTO;
 
 public interface EmployeeService {
 	
-	EmployeeResponseDTO createEmployee(EmployeeRequestDTO requestDTO);
+	SuccessDTO createEmployee(EmployeeRequestDTO requestDTO);
 
-    EmployeeResponseDTO getEmployeeById(int employeeId);
+	EmployeeResponseDTO getEmployeeById(Integer employeeId);
 
     List<EmployeeResponseDTO> getAllEmployees();
 
     List<EmployeeResponseDTO> getEmployeesByPosition(String position);
 
-    EmployeeResponseDTO updateEmployee(int employeeId, EmployeeRequestDTO requestDTO);
+    SuccessDTO updateEmployee(int employeeId, EmployeeRequestDTO requestDTO);
 
-    void deleteEmployee(int employeeId);
+    SuccessDTO deleteEmployee(int employeeId);
 
 }

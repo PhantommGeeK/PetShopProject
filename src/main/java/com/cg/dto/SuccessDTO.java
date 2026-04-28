@@ -19,4 +19,8 @@ public class SuccessDTO
 	}
 	
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/rishabh
