@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-
 import com.cg.dto.PetRequestDTO;
 import com.cg.dto.PetResponseDTO;
 import com.cg.dto.SuccessDTO;
@@ -13,7 +12,6 @@ import com.cg.entity.PetCategory;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.PetCategoryRepository;
 import com.cg.repo.PetRepository;
-import com.cg.service.PetService;
 
 @Service
 public class PetServiceImpl implements PetService {
