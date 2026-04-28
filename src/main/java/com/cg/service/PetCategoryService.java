@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cg.dto.PetCategoryRequestDTO;
 import com.cg.dto.PetCategoryResponseDTO;
+import com.cg.dto.SuccessDTO;
 
 public interface PetCategoryService {
 
@@ -11,5 +12,5 @@ public interface PetCategoryService {
     PetCategoryResponseDTO getCategoryById(Integer categoryId);
     List<PetCategoryResponseDTO> getAllCategories();
     PetCategoryResponseDTO updateCategory(Integer categoryId, PetCategoryRequestDTO requestDTO);
-    void deleteCategory(Integer categoryId);
+    SuccessDTO deleteCategory(Integer categoryId);
 }

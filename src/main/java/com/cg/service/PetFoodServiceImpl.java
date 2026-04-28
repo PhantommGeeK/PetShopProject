@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cg.dto.PetFoodRequestDTO;
 import com.cg.dto.PetFoodResponseDTO;
+import com.cg.dto.SuccessDTO;
 import com.cg.entity.PetFood;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.PetFoodRepository;
@@ -20,14 +21,12 @@ public class PetFoodServiceImpl implements PetFoodService {
     @Autowired
     private PetFoodRepository petFoodRepository;
 
-
     @Override
     public PetFoodResponseDTO createPetFood(PetFoodRequestDTO requestDTO) {
         PetFood petFood = mapToEntity(requestDTO);
         PetFood saved = petFoodRepository.save(petFood);
         return PetFoodResponseDTO.fromEntity(saved);
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -73,15 +72,14 @@ public class PetFoodServiceImpl implements PetFoodService {
         return PetFoodResponseDTO.fromEntity(updated);
     }
 
-
     @Override
-    public void deletePetFood(Integer foodId) {
+    public SuccessDTO deletePetFood(Integer foodId) {
         PetFood existing = petFoodRepository.findById(foodId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "PetFood not found with id: " + foodId));
         petFoodRepository.delete(existing);
+        return new SuccessDTO("PetFood with id " + foodId + " deleted successfully");
     }
-
 
     private PetFood mapToEntity(PetFoodRequestDTO dto) {
         PetFood petFood = new PetFood();
