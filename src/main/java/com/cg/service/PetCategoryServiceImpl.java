@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cg.dto.PetCategoryRequestDTO;
 import com.cg.dto.PetCategoryResponseDTO;
+import com.cg.dto.SuccessDTO;
 import com.cg.entity.PetCategory;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.PetCategoryRepository;
@@ -19,6 +20,7 @@ public class PetCategoryServiceImpl implements PetCategoryService {
 
     @Autowired
     private PetCategoryRepository petCategoryRepository;
+
     @Override
     public PetCategoryResponseDTO createCategory(PetCategoryRequestDTO requestDTO) {
         PetCategory category = mapToEntity(requestDTO);
@@ -57,11 +59,12 @@ public class PetCategoryServiceImpl implements PetCategoryService {
     }
 
     @Override
-    public void deleteCategory(Integer categoryId) {
+    public SuccessDTO deleteCategory(Integer categoryId) {
         PetCategory existing = petCategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "PetCategory not found with id: " + categoryId));
         petCategoryRepository.delete(existing);
+        return new SuccessDTO("PetCategory with id " + categoryId + " deleted successfully");
     }
 
     private PetCategory mapToEntity(PetCategoryRequestDTO dto) {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cg.dto.PetFoodRequestDTO;
 import com.cg.dto.PetFoodResponseDTO;
+import com.cg.dto.SuccessDTO;
 
 public interface PetFoodService {
 
@@ -12,5 +13,5 @@ public interface PetFoodService {
     List<PetFoodResponseDTO> getAllPetFoods();
     List<PetFoodResponseDTO> getPetFoodsByType(String type);
     PetFoodResponseDTO updatePetFood(Integer foodId, PetFoodRequestDTO requestDTO);
-    void deletePetFood(Integer foodId);
+    SuccessDTO deletePetFood(Integer foodId);
 }
