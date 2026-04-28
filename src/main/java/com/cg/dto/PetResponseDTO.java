@@ -31,13 +31,16 @@ public class PetResponseDTO {
     }
 
     public static PetResponseDTO fromEntity(Pet pet) {
+        PetCategoryResponseDTO category =
+            pet.getPetCategory() == null ? null : PetCategoryResponseDTO.fromEntity(pet.getPetCategory());
+
         return new PetResponseDTO(
             pet.getPetId(),
             pet.getName(),
             pet.getBreed(),
             pet.getAge(),
             pet.getPrice(),
-            PetCategoryResponseDTO.fromEntity(pet.getPetCategory()),
+            category,
             pet.getDescription(),
             pet.getImageUrl()
         );

@@ -17,10 +17,5 @@ public class SuccessDTO
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/rishabh

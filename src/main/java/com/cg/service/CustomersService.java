@@ -1,9 +1,11 @@
 package com.cg.service;
 
 import java.util.List;
+
 import com.cg.dto.CustomerTransactionSummaryDTO;
 import com.cg.dto.CustomersRequestDTO;
 import com.cg.dto.CustomersResponseDTO;
+import com.cg.dto.SuccessDTO;
 
 public interface CustomersService {
     CustomersResponseDTO createCustomer(CustomersRequestDTO requestDTO);

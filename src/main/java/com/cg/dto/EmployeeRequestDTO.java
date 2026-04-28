@@ -30,7 +30,7 @@ public class EmployeeRequestDTO {
     @Past(message = "Hire date must be a past date")
     private LocalDate hireDate;
 
-    @NotBlank(message = "Phone number is requiraed")
+    @NotBlank(message = "Phone number is required")
     @Pattern(
         regexp = "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{1,4}\\)?[\\s-]?\\d{1,4}[\\s-]?\\d{1,9}$",
         message = "Invalid phone number format"

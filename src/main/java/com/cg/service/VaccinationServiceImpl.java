@@ -1,13 +1,16 @@
 package com.cg.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.cg.dto.VaccinationRequestDTO;
 import com.cg.dto.VaccinationResponseDTO;
 import com.cg.entity.Vaccination;
+import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.VaccinationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class VaccinationServiceImpl implements VaccinationService {
@@ -28,7 +31,7 @@ public class VaccinationServiceImpl implements VaccinationService {
     @Override
     public VaccinationResponseDTO getVaccinationById(Integer id) {
         Vaccination v = vaccinationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vaccination not found with id: " + id));
+                .orElseThrow(() -> new 	ResourceNotFoundException("Vaccination not found with id: " + id));
         return convertToResponseDTO(v);
     }
 
@@ -63,7 +66,7 @@ public class VaccinationServiceImpl implements VaccinationService {
 
         
         Vaccination v = vaccinationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vaccination not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Vaccination not found with id: " + id));
 
         v.setName(dto.getName());
         v.setDescription(dto.getDescription());
@@ -78,7 +81,7 @@ public class VaccinationServiceImpl implements VaccinationService {
     @Override
     public void deleteVaccination(Integer id) {
         if (!vaccinationRepository.existsById(id)) {
-            throw new RuntimeException("Vaccination not found with id: " + id);
+            throw new ResourceNotFoundException("Vaccination not found with id: " + id);
         }
         vaccinationRepository.deleteById(id);
     }

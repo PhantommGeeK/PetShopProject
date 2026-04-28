@@ -20,7 +20,7 @@ public class TransactionResponseDTO {
 		super();
 		this.transactionId = transactionId;
 		this.transactionDate = transactionDate;
-		this.amount = amount;l
+		this.amount = amount;
 		this.transactionStatus = transactionStatus;
 		this.customers = customers;
 		this.pet = pet;

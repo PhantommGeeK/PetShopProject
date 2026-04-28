@@ -2,6 +2,14 @@ package com.cg.service;
 
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cg.dto.AddressesResponseDTO;
 import com.cg.dto.EmployeeRequestDTO;
 import com.cg.dto.EmployeeResponseDTO;
 import com.cg.dto.SuccessDTO;
@@ -10,14 +18,7 @@ import com.cg.entity.Employee;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.AddressesRepository;
 import com.cg.repo.EmployeeRepository;
-import com.cg.service.EmployeeService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,6 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	        AddressesResponseDTO addressDTO = new AddressesResponseDTO(
 	                emp.getAddress().getAddressId(),
+	                emp.getAddress().getStreet(),
 	                emp.getAddress().getCity(),
 	                emp.getAddress().getState(),
 	                emp.getAddress().getZipCode()
@@ -107,7 +109,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee emp = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
 
-        Address address = addressRepository.findById(requestDTO.getAddressId())
+        Addresses address = addressRepository.findById(requestDTO.getAddressId())
                 .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
         emp.setFirstName(requestDTO.getFirstName());

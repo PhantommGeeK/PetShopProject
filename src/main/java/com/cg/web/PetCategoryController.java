@@ -14,55 +14,49 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cg.dto.PetFoodRequestDTO;
-import com.cg.dto.PetFoodResponseDTO;
+import com.cg.dto.PetCategoryRequestDTO;
+import com.cg.dto.PetCategoryResponseDTO;
 import com.cg.dto.SuccessDTO;
-import com.cg.service.PetFoodService;
+import com.cg.service.PetCategoryService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/pet-foods")
-public class PetFoodController {
+@RequestMapping("/api/pet-categories")
+public class PetCategoryController {
 
     @Autowired
-    private PetFoodService petFoodService;
+    private PetCategoryService petCategoryService;
 
     @PostMapping
-    public ResponseEntity<PetFoodResponseDTO> createPetFood(@Valid @RequestBody PetFoodRequestDTO requestDTO) {
-        PetFoodResponseDTO response = petFoodService.createPetFood(requestDTO);
+    public ResponseEntity<PetCategoryResponseDTO> createCategory(@Valid @RequestBody PetCategoryRequestDTO requestDTO) {
+        PetCategoryResponseDTO response = petCategoryService.createCategory(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<PetFoodResponseDTO>> getAllPetFoods() {
-        List<PetFoodResponseDTO> response = petFoodService.getAllPetFoods();
+    public ResponseEntity<List<PetCategoryResponseDTO>> getAllCategories() {
+        List<PetCategoryResponseDTO> response = petCategoryService.getAllCategories();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{foodId}")
-    public ResponseEntity<PetFoodResponseDTO> getPetFoodById(@PathVariable Integer foodId) {
-        PetFoodResponseDTO response = petFoodService.getPetFoodById(foodId);
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<PetCategoryResponseDTO> getCategoryById(@PathVariable Integer categoryId) {
+        PetCategoryResponseDTO response = petCategoryService.getCategoryById(categoryId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/type/{type}")
-    public ResponseEntity<List<PetFoodResponseDTO>> getPetFoodsByType(@PathVariable String type) {
-        List<PetFoodResponseDTO> response = petFoodService.getPetFoodsByType(type);
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<PetCategoryResponseDTO> updateCategory(
+            @PathVariable Integer categoryId,
+            @Valid @RequestBody PetCategoryRequestDTO requestDTO) {
+        PetCategoryResponseDTO response = petCategoryService.updateCategory(categoryId, requestDTO);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{foodId}")
-    public ResponseEntity<PetFoodResponseDTO> updatePetFood(
-            @PathVariable Integer foodId,
-            @Valid @RequestBody PetFoodRequestDTO requestDTO) {
-        PetFoodResponseDTO response = petFoodService.updatePetFood(foodId, requestDTO);
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/{foodId}")
-    public ResponseEntity<SuccessDTO> deletePetFood(@PathVariable Integer foodId) {
-        SuccessDTO response = petFoodService.deletePetFood(foodId);
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<SuccessDTO> deleteCategory(@PathVariable Integer categoryId) {
+        SuccessDTO response = petCategoryService.deleteCategory(categoryId);
         return ResponseEntity.ok(response);
     }
 }

@@ -1,5 +1,7 @@
 package com.cg.dto;
 
+import com.cg.entity.Addresses;
+
 public class AddressesResponseDTO {
 	
 	private Integer addressId;
@@ -63,5 +65,13 @@ public class AddressesResponseDTO {
 	}
     
 	
-    
+	  public static AddressesResponseDTO fromEntity(Addresses address) {
+	        return new AddressesResponseDTO(
+	            address.getAddressId(),
+	            address.getStreet(),
+	            address.getCity(),
+	            address.getState(),
+	            address.getZipCode()
+	        );
+	    }
 }

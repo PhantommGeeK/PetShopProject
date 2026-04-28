@@ -1,8 +1,10 @@
 package com.cg.service;
 
 import java.util.List;
+
 import com.cg.dto.AddressesRequestDTO;
 import com.cg.dto.AddressesResponseDTO;
+import com.cg.dto.SuccessDTO;
 
 public interface AddressesService {
     AddressesResponseDTO createAddress(AddressesRequestDTO requestDTO);
