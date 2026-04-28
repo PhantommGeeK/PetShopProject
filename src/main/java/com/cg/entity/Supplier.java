@@ -1,11 +1,15 @@
 package com.cg.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -27,6 +31,26 @@ public class Supplier
 
 	private String email;
 	
+	@ManyToOne
+    @JoinColumn(name = "address_id")
+    private Addresses address;
+	
+	@ManyToMany
+	@JoinTable(
+	    name = "pet_supplier_relationship",
+	    joinColumns = @JoinColumn(name = "supplier_id"),
+	    inverseJoinColumns = @JoinColumn(name = "pet_id")
+	)
+	private List<Pet> pets;
+	
+	public List<Pet> getPets() {
+		return pets;
+	}
+
+	public void setPets(List<Pet> pets) {
+		this.pets = pets;
+	}
+
 	public Integer getSupplierId() {
 		return supplierId;
 	}
@@ -75,7 +99,5 @@ public class Supplier
 		this.address = address;
 	}
 
-	@ManyToOne
-    @JoinColumn(name = "address_id")
-    private Addresses address;
+	
 }
