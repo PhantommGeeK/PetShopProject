@@ -2,7 +2,13 @@ package com.cg.entity;
 
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name="addresses")
@@ -24,7 +30,7 @@ public class Addresses {
 	@Column(name="zip_code", length = 20)
 	private String zipCode;
 	
-	@OneToMany(mappedBy = "address")
+	@OneToMany(mappedBy = "addressId")
 	private List<Customers> customers;
 	
 	@OneToMany(mappedBy = "address")
