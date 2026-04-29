@@ -20,7 +20,7 @@ public class GroomingServicesRequestDTO {
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.01", message = "Price must be greater than 0")
     @Digits(integer = 8, fraction = 2, message = "Price must have at most 8 integer digits and 2 decimal places")
-    private BigDecimal price;
+    private Double price;
 
     @NotNull(message = "Availability status is required")
     private Boolean available;
@@ -29,7 +29,7 @@ public class GroomingServicesRequestDTO {
     public GroomingServicesRequestDTO() {}
 
     public GroomingServicesRequestDTO(String name, String description,
-                                      BigDecimal price, Boolean available) {
+                                      Double price, Boolean available) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -43,9 +43,16 @@ public class GroomingServicesRequestDTO {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
+    
 
-    public Boolean getAvailable() { return available; }
+    public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Boolean getAvailable() { return available; }
     public void setAvailable(Boolean available) { this.available = available; }
 }

@@ -7,14 +7,14 @@ public class GroomingServicesResponseDTO {
     private int serviceId;
     private String name;
     private String description;
-    private BigDecimal price;
+    private Double price;
     private boolean available;
 
     
     public GroomingServicesResponseDTO() {}
 
     public GroomingServicesResponseDTO(int serviceId, String name, String description,
-                                       BigDecimal price, boolean available) {
+                                       Double price, boolean available) {
         this.serviceId = serviceId;
         this.name = name;
         this.description = description;
@@ -32,9 +32,15 @@ public class GroomingServicesResponseDTO {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
 
-    public boolean isAvailable() { return available; }
+    public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public boolean isAvailable() { return available; }
     public void setAvailable(boolean available) { this.available = available; }
 }

@@ -18,7 +18,7 @@ public class GroomingServices {
     private String description;
 
     @Column(precision = 10, scale = 2)
-    private BigDecimal price;
+    private Double price;
 
     @Column(nullable = false)
     private boolean available = true;
@@ -27,7 +27,7 @@ public class GroomingServices {
     public GroomingServices() {}
 
     public GroomingServices(int serviceId, String name, String description,
-                           BigDecimal price, boolean available) {
+                           Double price, boolean available) {
         this.serviceId = serviceId;
         this.name = name;
         this.description = description;
@@ -61,11 +61,11 @@ public class GroomingServices {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
