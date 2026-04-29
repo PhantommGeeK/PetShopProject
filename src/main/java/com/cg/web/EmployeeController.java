@@ -34,13 +34,13 @@ public class EmployeeController {
     }
 
   
-    @PostMapping
-    public ResponseEntity<SuccessDTO> createEmployee(
-            @Valid @RequestBody EmployeeRequestDTO requestDTO) {
-
-        
-        return new ResponseEntity<>(employeeService.createEmployee(requestDTO), HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity<SuccessDTO> createEmployee(
+//            @Valid @RequestBody EmployeeRequestDTO requestDTO) {
+//
+//        
+//        return new ResponseEntity<>(employeeService.createEmployee(requestDTO), HttpStatus.CREATED);
+//    }
 
    
     @PutMapping("/{id}")

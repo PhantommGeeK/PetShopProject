@@ -8,7 +8,7 @@ import com.cg.dto.SuccessDTO;
 
 public interface EmployeeService {
 	
-	SuccessDTO createEmployee(EmployeeRequestDTO requestDTO);
+	//SuccessDTO createEmployee(EmployeeRequestDTO requestDTO);
 
 	EmployeeResponseDTO getEmployeeById(Integer employeeId);
 

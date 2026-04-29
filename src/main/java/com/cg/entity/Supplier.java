@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,6 +44,10 @@ public class Supplier
 	)
 	private List<Pet> pets;
 	
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	
 	public List<Pet> getPets() {
 		return pets;
 	}
@@ -61,6 +66,14 @@ public class Supplier
 
 	public String getName() {
 		return name;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public void setName(String name) {

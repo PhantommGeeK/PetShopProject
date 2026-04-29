@@ -3,6 +3,8 @@ package com.cg.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cg.dto.PetResponseDTO;
@@ -15,15 +17,32 @@ import com.cg.entity.Supplier;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.AddressesRepository;
 import com.cg.repo.PetRepository;
+import com.cg.repo.RoleRepository;
 import com.cg.repo.SupplierRepository;
+import com.cg.repo.UserRepository;
 
 @Service
 public class SupplierServiceImpl implements SupplierService {
 
-    private final SupplierRepository supplierRepository;
-    private final PetRepository petRepository;
-    private final AddressesRepository addressRepository;
+    @Autowired
+    private SupplierRepository supplierRepository;
 
+    @Autowired
+    private PetRepository petRepository;
+
+    @Autowired
+    private AddressesRepository addressRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // Constructor
     public SupplierServiceImpl(SupplierRepository supplierRepository,
                                PetRepository petRepository,
                                AddressesRepository addressRepository) {
@@ -32,6 +51,7 @@ public class SupplierServiceImpl implements SupplierService {
         this.addressRepository = addressRepository;
     }
 
+    // ✅ ADD SUPPLIER (kept from HEAD)
     @Override
     public SuccessDTO addSupplier(SupplierRequestDTO dto) {
 
@@ -53,7 +73,6 @@ public class SupplierServiceImpl implements SupplierService {
         return new SuccessDTO("Supplier added successfully");
     }
 
-    
     @Override
     public SupplierResponseDTO getSupplierById(Integer supplierId) {
 
@@ -62,7 +81,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         return SupplierResponseDTO.fromEntity(supplier);
     }
-    
+
     @Override
     public List<SupplierResponseDTO> getAllSuppliers() {
 
@@ -85,7 +104,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         if (dto.getAddressId() != null) {
             Addresses address = addressRepository.findById(dto.getAddressId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Address", dto.getAddressId()));
             supplier.setAddress(address);
         }
 
@@ -94,7 +113,6 @@ public class SupplierServiceImpl implements SupplierService {
         return new SuccessDTO("Supplier updated successfully");
     }
 
-    
     @Override
     public SuccessDTO deleteSupplier(Integer supplierId) {
 
@@ -106,7 +124,6 @@ public class SupplierServiceImpl implements SupplierService {
         return new SuccessDTO("Supplier deleted successfully");
     }
 
-    
     @Override
     public SuccessDTO assignPetToSupplier(Integer supplierId, Integer petId) {
 
