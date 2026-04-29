@@ -32,7 +32,7 @@ public class PetFood {
     private Integer quantity;
 
     @Column(name = "price", precision = 10, scale = 2)
-    private BigDecimal price;
+    private Double price;
 
     public Integer getFoodId() {
         return foodId;
@@ -74,11 +74,11 @@ public class PetFood {
         this.quantity = quantity;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }

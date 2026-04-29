@@ -1,6 +1,5 @@
 package com.cg.dto;
 
-import java.math.BigDecimal;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -29,11 +28,11 @@ public class PetFoodRequestDTO {
 
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
-    private BigDecimal price;
+    private Double price;
 
     public PetFoodRequestDTO() {}
 
-    public PetFoodRequestDTO(String name, String brand, String type, Integer quantity, BigDecimal price) {
+    public PetFoodRequestDTO(String name, String brand, String type, Integer quantity, Double price) {
         this.name = name;
         this.brand = brand;
         this.type = type;
@@ -53,6 +52,6 @@ public class PetFoodRequestDTO {
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
 
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
 }

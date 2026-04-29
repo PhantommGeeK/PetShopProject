@@ -24,7 +24,7 @@ import com.cg.service.SupplierService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/suppliers")
+@RequestMapping("/api/suppliers")
 public class SupplierController {
 
     @Autowired

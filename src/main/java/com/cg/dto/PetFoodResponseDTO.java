@@ -1,6 +1,6 @@
 package com.cg.dto;
 
-import java.math.BigDecimal;
+
 
 import com.cg.entity.PetFood;
 
@@ -11,12 +11,12 @@ public class PetFoodResponseDTO {
     private String brand;
     private String type;
     private Integer quantity;
-    private BigDecimal price;
+    private Double price;
 
     public PetFoodResponseDTO() {}
 
     public PetFoodResponseDTO(Integer foodId, String name, String brand, String type,
-                               Integer quantity, BigDecimal price) {
+                               Integer quantity, Double price) {
         this.foodId = foodId;
         this.name = name;
         this.brand = brand;
@@ -50,6 +50,6 @@ public class PetFoodResponseDTO {
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
 
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
 }
