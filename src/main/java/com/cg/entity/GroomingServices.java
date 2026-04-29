@@ -1,7 +1,11 @@
 package com.cg.entity;
 
-import jakarta.persistence.*;
-import java.math.BigDecimal;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "grooming_services")
@@ -17,10 +21,10 @@ public class GroomingServices {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(precision = 10, scale = 2)
+    @Column
     private Double price;
 
-    @Column(nullable = false)
+    @Column
     private boolean available = true;
 
     // Constructors

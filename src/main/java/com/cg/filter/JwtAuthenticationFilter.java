@@ -1,11 +1,9 @@
 package com.cg.filter;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -34,7 +32,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 		String authHeader= request.getHeader("Authorization");
 		String token= null;
 		String username= null;
-		
+		if (request.getServletPath().startsWith("/auth")) {
+		    filterChain.doFilter(request, response);
+		    return;
+		}
 		if(authHeader!= null && authHeader.startsWith("Bearer "))
 		{
 			token= authHeader.substring(7);

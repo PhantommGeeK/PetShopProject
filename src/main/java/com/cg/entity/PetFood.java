@@ -1,8 +1,6 @@
 
 package com.cg.entity;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +29,7 @@ public class PetFood {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "price", precision = 10, scale = 2)
+    @Column(name = "price")
     private Double price;
 
     public Integer getFoodId() {

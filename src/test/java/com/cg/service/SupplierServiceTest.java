@@ -1,11 +1,22 @@
 package com.cg.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cg.dto.SuccessDTO;
@@ -18,18 +29,6 @@ import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.AddressesRepository;
 import com.cg.repo.PetRepository;
 import com.cg.repo.SupplierRepository;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SupplierServiceTest {
@@ -83,28 +82,6 @@ public class SupplierServiceTest {
         requestDTO.setPhoneNumber("9876543210");
         requestDTO.setEmail("johndoe@gmail.com");
         requestDTO.setAddressId(1);
-    }
-
-    @Test
-    void testAddSupplier_success() {
-
-        when(addressRepository.findById(1)).thenReturn(Optional.of(address));
-        Mockito.when(supplierRepository.save(any(Supplier.class))).thenReturn(supplier);
-
-        SuccessDTO result = service.addSupplier(requestDTO);
-
-        assertEquals("Supplier added successfully", result.getMessage());
-        verify(supplierRepository, times(1)).save(any(Supplier.class));
-    }
-
-    @Test
-    void testAddSupplier_addressNotFound_throwsException() {
-
-        when(addressRepository.findById(1)).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> {
-            service.addSupplier(requestDTO);
-        });
     }
 
     @Test

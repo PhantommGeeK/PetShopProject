@@ -30,7 +30,7 @@ public class Addresses {
 	@Column(name="zip_code", length = 20)
 	private String zipCode;
 	
-	@OneToMany(mappedBy = "addressId")
+	@OneToMany(mappedBy = "address")
 	private List<Customers> customers;
 	
 	@OneToMany(mappedBy = "address")

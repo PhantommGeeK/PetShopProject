@@ -51,28 +51,7 @@ public class SupplierServiceImpl implements SupplierService {
         this.addressRepository = addressRepository;
     }
 
-    // ✅ ADD SUPPLIER (kept from HEAD)
-    @Override
-    public SuccessDTO addSupplier(SupplierRequestDTO dto) {
-
-        Supplier supplier = new Supplier();
-
-        supplier.setName(dto.getName());
-        supplier.setContactPerson(dto.getContactPerson());
-        supplier.setPhoneNumber(dto.getPhoneNumber());
-        supplier.setEmail(dto.getEmail());
-
-        if (dto.getAddressId() != null) {
-            Addresses address = addressRepository.findById(dto.getAddressId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Address", dto.getAddressId()));
-            supplier.setAddress(address);
-        }
-
-        supplierRepository.save(supplier);
-
-        return new SuccessDTO("Supplier added successfully");
-    }
-
+	
     @Override
     public SupplierResponseDTO getSupplierById(Integer supplierId) {
 
