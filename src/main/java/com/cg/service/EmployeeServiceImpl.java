@@ -1,7 +1,4 @@
 package com.cg.service;
-
-
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 private Employee mapToEntity(EmployeeRequestDTO dto) {
 
 	        Addresses address = addressRepository.findById(dto.getAddressId())
-	                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+	        		.orElseThrow(() -> new ResourceNotFoundException("Address", dto.getAddressId()));
 
 	        Employee emp = new Employee();
 	        emp.setFirstName(dto.getFirstName());
@@ -81,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponseDTO getEmployeeById(Integer employeeId) {
     	   Employee emp = employeeRepository.findById(employeeId)
-                   .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+    			   .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId));
            return mapToDTO(emp);
     }
 
@@ -107,10 +104,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public SuccessDTO updateEmployee(int employeeId, EmployeeRequestDTO requestDTO) {
 
         Employee emp = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+        		.orElseThrow(() -> new ResourceNotFoundException("Employee", employeeId));
 
         Addresses address = addressRepository.findById(requestDTO.getAddressId())
-                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Address", requestDTO.getAddressId()));
 
         emp.setFirstName(requestDTO.getFirstName());
         emp.setLastName(requestDTO.getLastName());
@@ -130,7 +127,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public SuccessDTO deleteEmployee(int employeeID) {
     	Employee emp = employeeRepository.findById(employeeID)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", employeeID));
     			employeeRepository.delete(emp);
     			return new SuccessDTO("Emplolyee deleted successfully");
     			

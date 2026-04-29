@@ -5,10 +5,17 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.cg.dto.*;
-import com.cg.entity.*;
+import com.cg.dto.PetResponseDTO;
+import com.cg.dto.SuccessDTO;
+import com.cg.dto.SupplierRequestDTO;
+import com.cg.dto.SupplierResponseDTO;
+import com.cg.entity.Addresses;
+import com.cg.entity.Pet;
+import com.cg.entity.Supplier;
 import com.cg.exception.ResourceNotFoundException;
-import com.cg.repo.*;
+import com.cg.repo.AddressesRepository;
+import com.cg.repo.PetRepository;
+import com.cg.repo.SupplierRepository;
 
 @Service
 public class SupplierServiceImpl implements SupplierService {
@@ -37,7 +44,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         if (dto.getAddressId() != null) {
             Addresses address = addressRepository.findById(dto.getAddressId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Address", dto.getAddressId()));
             supplier.setAddress(address);
         }
 
@@ -51,7 +58,7 @@ public class SupplierServiceImpl implements SupplierService {
     public SupplierResponseDTO getSupplierById(Integer supplierId) {
 
         Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier", supplierId));
 
         return SupplierResponseDTO.fromEntity(supplier);
     }
@@ -69,7 +76,7 @@ public class SupplierServiceImpl implements SupplierService {
     public SuccessDTO updateSupplier(Integer supplierId, SupplierRequestDTO dto) {
 
         Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier", supplierId));
 
         supplier.setName(dto.getName());
         supplier.setContactPerson(dto.getContactPerson());
@@ -92,7 +99,7 @@ public class SupplierServiceImpl implements SupplierService {
     public SuccessDTO deleteSupplier(Integer supplierId) {
 
         Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier", supplierId));
 
         supplierRepository.delete(supplier);
 
@@ -104,10 +111,10 @@ public class SupplierServiceImpl implements SupplierService {
     public SuccessDTO assignPetToSupplier(Integer supplierId, Integer petId) {
 
         Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier", supplierId));
 
         Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new ResourceNotFoundException("Pet not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pet", petId));
 
         supplier.getPets().add(pet);
 
@@ -120,10 +127,10 @@ public class SupplierServiceImpl implements SupplierService {
     public SuccessDTO removePetFromSupplier(Integer supplierId, Integer petId) {
 
         Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier", supplierId));
 
         Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new ResourceNotFoundException("Pet not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pet", petId));
 
         supplier.getPets().remove(pet);
 
@@ -136,7 +143,7 @@ public class SupplierServiceImpl implements SupplierService {
     public List<PetResponseDTO> getPetsBySupplier(Integer supplierId) {
 
         Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier", supplierId));
 
         return supplier.getPets()
                 .stream()

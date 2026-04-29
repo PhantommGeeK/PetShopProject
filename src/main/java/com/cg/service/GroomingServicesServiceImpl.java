@@ -12,7 +12,6 @@ import com.cg.dto.SuccessDTO;
 import com.cg.entity.GroomingServices;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.GroomingServicesRepository;
-import com.cg.service.GroomingServicesService;
 
 @Service
 public class GroomingServicesServiceImpl implements GroomingServicesService {
@@ -52,7 +51,7 @@ public class GroomingServicesServiceImpl implements GroomingServicesService {
     @Override
     public GroomingServicesResponseDTO getServiceById(int serviceId) {
         GroomingServices service = repository.findById(serviceId)
-                .orElseThrow(() -> new ResourceNotFoundException("Service not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Grooming Service",serviceId));
         return mapToDTO(service);
     }
 
@@ -106,7 +105,7 @@ public class GroomingServicesServiceImpl implements GroomingServicesService {
     @Override
     public SuccessDTO deleteService(int serviceId) {
         if (!repository.existsById(serviceId)) {
-            throw new ResourceNotFoundException("Service not found");
+            throw new ResourceNotFoundException("Grooming Service", serviceId);
         }
         repository.deleteById(serviceId);
         return new SuccessDTO("Services deleted successfully");

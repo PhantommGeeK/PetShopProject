@@ -13,7 +13,6 @@ import com.cg.entity.PetCategory;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.PetCategoryRepository;
 import com.cg.repo.PetRepository;
-import com.cg.service.PetService;
 
 @Service
 public class PetServiceImpl implements PetService {
@@ -32,7 +31,7 @@ public class PetServiceImpl implements PetService {
     public SuccessDTO addPet(PetRequestDTO dto) {
 
         PetCategory category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Pet category not found!"));
+        		.orElseThrow(() -> new ResourceNotFoundException("PetCategory", dto.getCategoryId()));
 
         Pet pet = new Pet();
         pet.setName(dto.getName());
@@ -53,7 +52,7 @@ public class PetServiceImpl implements PetService {
     
     public List<PetResponseDTO> getAllPets() {
     	if(petRepository.findAll().isEmpty())
-    		throw new ResourceNotFoundException("No pets found!");
+    		throw new ResourceNotFoundException("No pets are currently available", "getAllPets");
         return petRepository.findAll()
                 .stream()
                 .map(PetResponseDTO::fromEntity)
@@ -65,7 +64,7 @@ public class PetServiceImpl implements PetService {
     public PetResponseDTO getPetById(Integer petId) {
 
         Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new ResourceNotFoundException("Pet not found"));
+        	    .orElseThrow(() -> new ResourceNotFoundException("Pet", petId));
 
         return PetResponseDTO.fromEntity(pet);
     }
@@ -120,8 +119,9 @@ public class PetServiceImpl implements PetService {
 
 	@Override
 	public SuccessDTO updatePet(Integer petId, PetRequestDTO dto) {
-		Pet pet= petRepository.findById(petId).orElseThrow(()->new ResourceNotFoundException("Pet not found!"));
-		PetCategory category= categoryRepository.findById(dto.getCategoryId()).orElseThrow(()->new ResourceNotFoundException("Pet category not found!"));
+		Pet pet= petRepository.findById(petId).orElseThrow(()->new ResourceNotFoundException("Pet not found!",dto.getName()));
+		PetCategory category= categoryRepository.findById(dto.getCategoryId())
+				.orElseThrow(()->new ResourceNotFoundException("PetCategory not found!",dto.getCategoryId()));
 		pet.setName(dto.getName());
 		pet.setAge(dto.getAge());
 		pet.setBreed(dto.getBreed());
@@ -136,7 +136,8 @@ public class PetServiceImpl implements PetService {
 
 	@Override
 	public SuccessDTO deletePet(Integer petId) {
-		Pet pet= petRepository.findById(petId).orElseThrow(()->new ResourceNotFoundException("Pet not found!"));
+		Pet pet= petRepository.findById(petId)
+				.orElseThrow(()->new ResourceNotFoundException("Pet not found!",petId));
 		petRepository.delete(pet);
 		return new SuccessDTO("Pet deleted successfully");
 	}

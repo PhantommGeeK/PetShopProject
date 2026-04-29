@@ -23,7 +23,7 @@ import com.cg.service.PetService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/pets")
+@RequestMapping("/api/pets")
 public class PetController 
 {
 	@Autowired

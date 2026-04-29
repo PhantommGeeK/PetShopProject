@@ -32,8 +32,7 @@ public class PetCategoryServiceImpl implements PetCategoryService {
     @Transactional(readOnly = true)
     public PetCategoryResponseDTO getCategoryById(Integer categoryId) {
         PetCategory category = petCategoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "PetCategory not found with id: " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Pet Category", categoryId));
         return PetCategoryResponseDTO.fromEntity(category);
     }
 
@@ -49,8 +48,7 @@ public class PetCategoryServiceImpl implements PetCategoryService {
     @Override
     public PetCategoryResponseDTO updateCategory(Integer categoryId, PetCategoryRequestDTO requestDTO) {
         PetCategory existing = petCategoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "PetCategory not found with id: " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Pet Category", categoryId));
 
         existing.setName(requestDTO.getName());
 
@@ -61,8 +59,7 @@ public class PetCategoryServiceImpl implements PetCategoryService {
     @Override
     public SuccessDTO deleteCategory(Integer categoryId) {
         PetCategory existing = petCategoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "PetCategory not found with id: " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Pet Category", categoryId));
         petCategoryRepository.delete(existing);
         return new SuccessDTO("PetCategory with id " + categoryId + " deleted successfully");
     }

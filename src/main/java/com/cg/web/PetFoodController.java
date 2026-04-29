@@ -43,6 +43,7 @@ public class PetFoodController {
     @GetMapping("/{foodId}")
     public ResponseEntity<PetFoodResponseDTO> getPetFoodById(@PathVariable Integer foodId) {
         PetFoodResponseDTO response = petFoodService.getPetFoodById(foodId);
+        
         return ResponseEntity.ok(response);
     }
 

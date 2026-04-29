@@ -44,7 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionResponseDTO getTransactionById(Integer id) {
         Transaction t = transactionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + id));
+        		.orElseThrow(() -> new ResourceNotFoundException("Transaction", id));
         return convertToResponseDTO(t);
     }
 
@@ -63,11 +63,11 @@ public class TransactionServiceImpl implements TransactionService {
 
         
         Customers customer = customersRepository.findById(dto.getCustomerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + dto.getCustomerId()));
+        		.orElseThrow(() -> new ResourceNotFoundException("Customer", dto.getCustomerId()));
 
         
         Pet pet = petRepository.findById(dto.getPetId())
-                .orElseThrow(() -> new ResourceNotFoundException("Pet not found: " + dto.getPetId()));
+        		.orElseThrow(() -> new ResourceNotFoundException("Pet",dto.getPetId()));
 
         
         Transaction t = new Transaction();
@@ -86,7 +86,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionResponseDTO updateTransactionStatus(Integer id, String status) {
         Transaction t = transactionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + id));
+        		.orElseThrow(() -> new ResourceNotFoundException("Transaction", id));
 
         t.setTransactionStatus(status);
         Transaction updated = transactionRepository.save(t);

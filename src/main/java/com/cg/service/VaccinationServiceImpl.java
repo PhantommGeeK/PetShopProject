@@ -31,7 +31,7 @@ public class VaccinationServiceImpl implements VaccinationService {
     @Override
     public VaccinationResponseDTO getVaccinationById(Integer id) {
         Vaccination v = vaccinationRepository.findById(id)
-                .orElseThrow(() -> new 	ResourceNotFoundException("Vaccination not found with id: " + id));
+        		.orElseThrow(() -> new ResourceNotFoundException("Vaccination", id));
         return convertToResponseDTO(v);
     }
 
@@ -66,7 +66,7 @@ public class VaccinationServiceImpl implements VaccinationService {
 
         
         Vaccination v = vaccinationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vaccination not found with id: " + id));
+        		.orElseThrow(() -> new ResourceNotFoundException("Vaccination", id));
 
         v.setName(dto.getName());
         v.setDescription(dto.getDescription());
@@ -81,7 +81,7 @@ public class VaccinationServiceImpl implements VaccinationService {
     @Override
     public void deleteVaccination(Integer id) {
         if (!vaccinationRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Vaccination not found with id: " + id);
+        	throw new ResourceNotFoundException("Vaccination", id);
         }
         vaccinationRepository.deleteById(id);
     }

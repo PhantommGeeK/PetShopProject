@@ -15,6 +15,7 @@ import com.cg.dto.SuccessDTO;
 import com.cg.entity.Addresses;
 import com.cg.entity.Customers;
 import com.cg.entity.Transaction;
+import com.cg.exception.InvalidRequestException;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.AddressesRepository;
 import com.cg.repo.CustomersRepository;
@@ -71,21 +72,23 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     private Addresses resolveAddress(CustomersRequestDTO requestDTO) {
-
+    	 
         if (requestDTO.getAddressId() != null && requestDTO.getAddress() != null) {
-            throw new ResourceNotFoundException("Provide either addressId or new address details, not both");
+            throw new InvalidRequestException(
+                    "Provide either addressId or new address details, not both");
         }
-
+ 
         if (requestDTO.getAddressId() == null && requestDTO.getAddress() == null) {
-            throw new ResourceNotFoundException("Either addressId or new address details must be provided");
+            throw new InvalidRequestException(
+                    "Either addressId or new address details must be provided");
         }
-
+ 
         if (requestDTO.getAddressId() != null) {
             return addressesRepository.findById(requestDTO.getAddressId())
                     .orElseThrow(() -> new ResourceNotFoundException(
-                            "Address not found with ID: " + requestDTO.getAddressId()));
+                            "Address", requestDTO.getAddressId()));
         }
-
+ 
         Addresses newAddress = new Addresses();
         newAddress.setStreet(requestDTO.getAddress().getStreet());
         newAddress.setCity(requestDTO.getAddress().getCity());
@@ -105,8 +108,7 @@ public class CustomersServiceImpl implements CustomersService {
     @Override
     public CustomersResponseDTO getCustomerById(Integer customerId) {
         Customers customer = customersRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Customer not found with ID: " + customerId));
+        		.orElseThrow(() -> new ResourceNotFoundException("Customer", customerId));
         return convertToResponseDTO(customer);
     }
 
@@ -121,8 +123,7 @@ public class CustomersServiceImpl implements CustomersService {
     @Override
     public CustomersResponseDTO getCustomerByEmail(String email) {
         Customers customer = customersRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Customer not found with email: " + email));
+        		.orElseThrow(() -> new ResourceNotFoundException("Customer (email)", email));
         return convertToResponseDTO(customer);
     }
 
@@ -140,7 +141,7 @@ public class CustomersServiceImpl implements CustomersService {
     @Override
     public SuccessDTO deleteCustomer(Integer customerId) {
         if (!customersRepository.existsById(customerId)) {
-            throw new ResourceNotFoundException("Customer not found with ID: " + customerId);
+        	throw new ResourceNotFoundException("Customer", customerId);
         }
         customersRepository.deleteById(customerId);
         return new SuccessDTO("Customer with ID " + customerId + " deleted successfully");
@@ -150,8 +151,7 @@ public class CustomersServiceImpl implements CustomersService {
     public CustomerTransactionSummaryDTO getCustomerTransactionSummary(Integer customerId) {
 
         Customers customer = customersRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Customer not found with ID: " + customerId));
+        		.orElseThrow(() -> new ResourceNotFoundException("Customer", customerId));
 
         List<Transaction> txList = customer.getTransactions();
 
