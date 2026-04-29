@@ -125,7 +125,12 @@ public class CustomersServiceImpl implements CustomersService {
                         "Customer not found with email: " + email));
         return convertToResponseDTO(customer);
     }
-
+    
+    public List<CustomersResponseDTO> getCustomersByCity(String city){
+    	return customersRepository.findByAddressCity(city)
+    			.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+    }
+    
     @Override
     public CustomersResponseDTO updateCustomer(Integer customerId, CustomersRequestDTO requestDTO) {
         Customers customer = customersRepository.findById(customerId)
