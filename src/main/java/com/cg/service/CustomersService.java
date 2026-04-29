@@ -8,7 +8,7 @@ import com.cg.dto.CustomersResponseDTO;
 import com.cg.dto.SuccessDTO;
 
 public interface CustomersService {
-    CustomersResponseDTO createCustomer(CustomersRequestDTO requestDTO);
+    // CustomersResponseDTO createCustomer(CustomersRequestDTO requestDTO);
     CustomersResponseDTO getCustomerById(Integer customerId);
     CustomersResponseDTO getCustomerByEmail(String email);
     List<CustomersResponseDTO> getAllCustomers();

@@ -9,9 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
-
 
 @Entity
 @Table(name = "employees")
@@ -43,8 +42,19 @@ public class Employee {
     @JoinColumn(name = "address_id")
     private Addresses address;
 
-   
-    public Employee() {}
+    @OneToOne
+   	@JoinColumn(name = "user_id")
+   	private User user;
+    
+    public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Employee() {}
 
     public Employee(Integer employeeId, String firstName, String lastName, String position,
                     LocalDate hireDate, String phoneNumber, String email, Addresses address) {

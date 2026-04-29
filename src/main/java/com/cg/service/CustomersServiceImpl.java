@@ -48,7 +48,7 @@ public class CustomersServiceImpl implements CustomersService {
         responseDTO.setLastName(customer.getLastName());
         responseDTO.setEmail(customer.getEmail());
         responseDTO.setPhoneNumber(customer.getPhoneNumber());
-        responseDTO.setAddress(convertAddressToDTO(customer.getAddressId()));
+        responseDTO.setAddress(convertAddressToDTO(customer.getAddress()));
         return responseDTO;
     }
 
@@ -58,7 +58,7 @@ public class CustomersServiceImpl implements CustomersService {
         customer.setLastName(requestDTO.getLastName());
         customer.setEmail(requestDTO.getEmail());
         customer.setPhoneNumber(requestDTO.getPhoneNumber());
-        customer.setAddressId(address);
+        customer.setAddress(address);
         return customer;
     }
 
@@ -67,7 +67,7 @@ public class CustomersServiceImpl implements CustomersService {
         customer.setLastName(requestDTO.getLastName());
         customer.setEmail(requestDTO.getEmail());
         customer.setPhoneNumber(requestDTO.getPhoneNumber());
-        customer.setAddressId(address);
+        customer.setAddress(address);
     }
 
     private Addresses resolveAddress(CustomersRequestDTO requestDTO) {
@@ -92,14 +92,6 @@ public class CustomersServiceImpl implements CustomersService {
         newAddress.setState(requestDTO.getAddress().getState());
         newAddress.setZipCode(requestDTO.getAddress().getZipCode());
         return addressesRepository.save(newAddress);
-    }
-
-    @Override
-    public CustomersResponseDTO createCustomer(CustomersRequestDTO requestDTO) {
-        Addresses address = resolveAddress(requestDTO);
-        Customers customer = convertToEntity(requestDTO, address);
-        Customers savedCustomer = customersRepository.save(customer);
-        return convertToResponseDTO(savedCustomer);
     }
 
     @Override

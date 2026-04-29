@@ -3,50 +3,33 @@ package com.cg.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cg.dto.*;
 import com.cg.entity.*;
 import com.cg.exception.ResourceNotFoundException;
+import com.cg.exception.UserAlreadyExistsException;
 import com.cg.repo.*;
 
 @Service
 public class SupplierServiceImpl implements SupplierService {
 
-    private final SupplierRepository supplierRepository;
-    private final PetRepository petRepository;
-    private final AddressesRepository addressRepository;
+	@Autowired
+    private SupplierRepository supplierRepository;
+	@Autowired
+    private PetRepository petRepository;
+	@Autowired
+    private AddressesRepository addressRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+    private RoleRepository roleRepository;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public SupplierServiceImpl(SupplierRepository supplierRepository,
-                               PetRepository petRepository,
-                               AddressesRepository addressRepository) {
-        this.supplierRepository = supplierRepository;
-        this.petRepository = petRepository;
-        this.addressRepository = addressRepository;
-    }
-
-    @Override
-    public SuccessDTO addSupplier(SupplierRequestDTO dto) {
-
-        Supplier supplier = new Supplier();
-
-        supplier.setName(dto.getName());
-        supplier.setContactPerson(dto.getContactPerson());
-        supplier.setPhoneNumber(dto.getPhoneNumber());
-        supplier.setEmail(dto.getEmail());
-
-        if (dto.getAddressId() != null) {
-            Addresses address = addressRepository.findById(dto.getAddressId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
-            supplier.setAddress(address);
-        }
-
-        supplierRepository.save(supplier);
-
-        return new SuccessDTO("Supplier added successfully");
-    }
-
-    
+	
     @Override
     public SupplierResponseDTO getSupplierById(Integer supplierId) {
 

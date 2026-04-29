@@ -71,12 +71,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	        return emp;
 	    }
    
-	 @Override
-	    public SuccessDTO createEmployee(EmployeeRequestDTO requestDTO) {
-	        Employee emp = mapToEntity(requestDTO);
-	        employeeRepository.save(emp);
-	        return new SuccessDTO("Employee created successfully");
-	    }
 
     @Override
     public EmployeeResponseDTO getEmployeeById(Integer employeeId) {

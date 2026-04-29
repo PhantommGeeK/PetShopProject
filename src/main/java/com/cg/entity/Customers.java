@@ -28,7 +28,7 @@ public class Customers {
  
     @ManyToOne
     @JoinColumn(name = "address_id")
-    private Addresses addressId;
+    private Addresses address;
  
     @OneToMany(mappedBy = "customer")
     private List<Transaction> transactions;
@@ -50,14 +50,14 @@ public class Customers {
 	}
 
 	public Customers(Integer customerId, String firstName, String lastName, String email, String phoneNumber,
-			Addresses addressId, List<Transaction> transactions) {
+			Addresses address, List<Transaction> transactions) {
 		super();
 		this.customerId = customerId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.addressId = addressId;
+		this.address = address;
 		this.transactions = transactions;
 	}
 
@@ -101,12 +101,12 @@ public class Customers {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Addresses getAddressId() {
-		return addressId;
+	public Addresses getAddress() {
+		return address;
 	}
 	
-	public void setAddressId(Addresses addressId) {
-		this.addressId = addressId;
+	public void setAddress(Addresses addressId) {
+		this.address = addressId;
 	}
 
 	public List<Transaction> getTransactions() {

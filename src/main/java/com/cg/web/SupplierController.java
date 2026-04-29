@@ -30,11 +30,6 @@ public class SupplierController {
     @Autowired
     private SupplierService supplierService;
 
-    @PostMapping
-    public ResponseEntity<SuccessDTO> addSupplier(@Valid @RequestBody SupplierRequestDTO dto) {
-        return new ResponseEntity<>(supplierService.addSupplier(dto), HttpStatus.CREATED);
-    }
-
     @GetMapping
     public ResponseEntity<List<SupplierResponseDTO>> getSuppliers() {
         return ResponseEntity.ok(supplierService.getAllSuppliers());

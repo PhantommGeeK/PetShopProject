@@ -54,12 +54,12 @@ public class CustomersController {
         return ResponseEntity.ok(summary);
     }
 
-    @PostMapping
-    public ResponseEntity<CustomersResponseDTO> createCustomer(
-            @Valid @RequestBody CustomersRequestDTO requestDTO) {
-        CustomersResponseDTO savedCustomer = customersService.createCustomer(requestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
-    }
+//    @PostMapping
+//    public ResponseEntity<CustomersResponseDTO> createCustomer(
+//            @Valid @RequestBody CustomersRequestDTO requestDTO) {
+//        CustomersResponseDTO savedCustomer = customersService.createCustomer(requestDTO);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomersResponseDTO> updateCustomer(

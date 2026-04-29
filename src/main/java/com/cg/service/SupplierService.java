@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.cg.dto.PetResponseDTO;
 import com.cg.dto.SuccessDTO;
+import com.cg.dto.SupplierRegisterDTO;
 import com.cg.dto.SupplierRequestDTO;
 import com.cg.dto.SupplierResponseDTO;
 
 public interface SupplierService 
 {
-	public SuccessDTO addSupplier(SupplierRequestDTO dto);
+	// public SuccessDTO addSupplier(SupplierRegisterDTO dto);
 	public SupplierResponseDTO getSupplierById(Integer supplierId);
 	public List<SupplierResponseDTO> getAllSuppliers();
 	public List<PetResponseDTO> getPetsBySupplier(Integer supplierId);
