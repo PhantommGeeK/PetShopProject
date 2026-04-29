@@ -53,6 +53,12 @@ public class CustomersController {
         CustomerTransactionSummaryDTO summary = customersService.getCustomerTransactionSummary(id);
         return ResponseEntity.ok(summary);
     }
+    
+    @GetMapping("/{city}")
+    public ResponseEntity<List<CustomersResponseDTO>> getCustomersByCity(@PathVariable String city) {
+		List<CustomersResponseDTO> customers = customersService.getCustomersByCity(city);
+		return ResponseEntity.ok(customers);
+	}
 
     @PostMapping
     public ResponseEntity<CustomersResponseDTO> createCustomer(

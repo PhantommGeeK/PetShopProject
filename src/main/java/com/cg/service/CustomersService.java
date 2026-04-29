@@ -15,4 +15,5 @@ public interface CustomersService {
     CustomersResponseDTO updateCustomer(Integer customerId, CustomersRequestDTO requestDTO);
     SuccessDTO deleteCustomer(Integer customerId);
     CustomerTransactionSummaryDTO getCustomerTransactionSummary(Integer customerId);
+    List<CustomersResponseDTO> getCustomersByCity(String city);
 }

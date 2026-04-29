@@ -56,6 +56,7 @@ public class AddressesServiceImpl implements AddressesService {
     public AddressesResponseDTO getAddressById(Integer addressId) {
         Addresses address = addressesRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address", addressId));
+
         return convertToResponseDTO(address);
     }
 
@@ -72,6 +73,7 @@ public class AddressesServiceImpl implements AddressesService {
         Addresses address = addressesRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address", addressId));
 
+
         updateEntityFromDTO(requestDTO, address);
         Addresses updatedAddress = addressesRepository.save(address);
         return convertToResponseDTO(updatedAddress);
@@ -81,6 +83,7 @@ public class AddressesServiceImpl implements AddressesService {
     public SuccessDTO deleteAddress(Integer addressId) {
         if (!addressesRepository.existsById(addressId)) {
             throw new ResourceNotFoundException("Address", addressId);
+
         }
         addressesRepository.deleteById(addressId);
         return new SuccessDTO("Address with ID " + addressId + " deleted successfully");

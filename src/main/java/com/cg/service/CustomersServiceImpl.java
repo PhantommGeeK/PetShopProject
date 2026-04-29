@@ -126,7 +126,12 @@ public class CustomersServiceImpl implements CustomersService {
         		.orElseThrow(() -> new ResourceNotFoundException("Customer (email)", email));
         return convertToResponseDTO(customer);
     }
-
+    
+    public List<CustomersResponseDTO> getCustomersByCity(String city){
+    	return customersRepository.findByAddressCity(city)
+    			.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+    }
+    
     @Override
     public CustomersResponseDTO updateCustomer(Integer customerId, CustomersRequestDTO requestDTO) {
         Customers customer = customersRepository.findById(customerId)
