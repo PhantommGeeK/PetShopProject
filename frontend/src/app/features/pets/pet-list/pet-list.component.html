@@ -1,0 +1,44 @@
+    <div class="section" id="pet-list-page">
+      <h1 class="heading-two-tone">Our <span class="accent">Pets</span></h1>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <input type="text" placeholder="Search by name..." [(ngModel)]="searchName" (ngModelChange)="onSearchChange()" class="filter-input" id="filter-name">
+        <select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()" id="filter-category">
+          <option [ngValue]="0">All Categories</option>
+          <option *ngFor="let c of categories" [ngValue]="c.categoryId">{{ c.name }}</option>
+        </select>
+        <input type="text" placeholder="Search by breed..." [(ngModel)]="searchBreed" (ngModelChange)="onBreedChange()" class="filter-input" id="filter-breed">
+        <div class="price-range">
+          <input type="number" placeholder="Min ₹" [(ngModel)]="minPrice" (ngModelChange)="onPriceChange()" id="filter-min">
+          <span>—</span>
+          <input type="number" placeholder="Max ₹" [(ngModel)]="maxPrice" (ngModelChange)="onPriceChange()" id="filter-max">
+        </div>
+      </div>
+
+      <!-- Pet Grid -->
+      <div class="pet-grid stagger-children" *ngIf="!loading && pets.length">
+        <app-pet-card *ngFor="let pet of pets" [pet]="pet"></app-pet-card>
+      </div>
+
+      <!-- Loading -->
+      <div class="pet-grid" *ngIf="loading">
+        <div class="skeleton-card" *ngFor="let s of [1,2,3,4,5,6,7,8]">
+          <div class="skeleton" style="height:200px"></div>
+          <div style="padding:16px">
+            <div class="skeleton" style="height:20px;width:70%;margin-bottom:8px"></div>
+            <div class="skeleton" style="height:14px;width:50%;margin-bottom:12px"></div>
+            <div class="skeleton" style="height:36px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="!loading && !pets.length">
+        <svg viewBox="0 0 100 100" width="80" height="80" fill="var(--color-text-muted)">
+          <circle cx="30" cy="20" r="10"/><circle cx="70" cy="20" r="10"/><circle cx="15" cy="45" r="8"/><circle cx="85" cy="45" r="8"/><ellipse cx="50" cy="70" rx="25" ry="20"/>
+        </svg>
+        <h3>No pets found</h3>
+        <p>Try adjusting your search or filters</p>
+      </div>
+    </div>

@@ -1,0 +1,23 @@
+    <div class="admin-page" id="admin-categories-page">
+      <div class="page-header"><h1>Manage Categories</h1><button class="btn btn-primary" (click)="openModal()">+ Add Category</button></div>
+      <div class="table-wrapper">
+        <div class="search-bar"><input placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="filter()"></div>
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Name</th><th>Actions</th></tr></thead>
+          <tbody><tr *ngFor="let c of filtered"><td>{{ c.categoryId }}</td><td>{{ c.name }}</td><td>
+            <button class="btn btn-accent btn-sm" (click)="edit(c)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="confirmDel(c)" style="margin-left:4px">Delete</button>
+          </td></tr></tbody>
+        </table>
+      </div>
+      <div class="modal-overlay" *ngIf="showModal" (click)="showModal=false">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header"><h2>{{ editingId ? 'Edit' : 'Add' }} Category</h2><button class="modal-close" (click)="showModal=false">×</button></div>
+          <form (ngSubmit)="save()">
+            <div class="form-group"><label>Name</label><input [(ngModel)]="formName" name="name" required></div>
+            <button type="submit" class="btn btn-primary btn-full">{{ editingId ? 'Update' : 'Create' }}</button>
+          </form>
+        </div>
+      </div>
+      <app-confirm-dialog [show]="showConfirm" (confirmed)="deleteItem()" (cancelled)="showConfirm=false"></app-confirm-dialog>
+    </div>

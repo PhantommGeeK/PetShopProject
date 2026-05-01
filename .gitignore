@@ -39,3 +39,6 @@ application.properties
 /bin/
 /target/
 *.class
+
+node_modules/
+frontend/node_modules/

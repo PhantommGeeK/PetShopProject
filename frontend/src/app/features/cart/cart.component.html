@@ -1,0 +1,43 @@
+
+    <div class="section" id="cart-page">
+      <h1 class="heading-two-tone">Your <span class="accent">Cart</span></h1>
+      <p class="intro">Selected items from pets, pet food, vaccinations, and grooming pages.</p>
+
+      <section class="cart-list card">
+        <div class="cart-header">
+          <h2>Selected Items</h2>
+          <button class="btn btn-danger btn-sm" (click)="clearCart()" *ngIf="cartItems.length">Clear Cart</button>
+        </div>
+
+        <div *ngIf="!cartItems.length" class="empty-state">
+          No items in cart. Add items from pets, pet food, vaccinations, or grooming pages.
+        </div>
+
+        <div class="cart-item" *ngFor="let item of cartItems">
+          <div class="cart-main">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description }}</p>
+            <span class="badge">{{ item.itemType }}</span>
+          </div>
+          <div class="cart-actions">
+            <button class="qty-btn" (click)="decrease(item)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button class="qty-btn" (click)="increase(item)">+</button>
+            <strong>{{ (item.price * item.quantity) | currencyInr }}</strong>
+            <button class="remove-btn" (click)="remove(item)">Remove</button>
+          </div>
+        </div>
+
+        <div class="summary" *ngIf="cartItems.length">
+          <div>
+            <p>Total Items</p>
+            <strong>{{ totalCount }}</strong>
+          </div>
+          <div>
+            <p>Total Amount</p>
+            <strong>{{ totalAmount | currencyInr }}</strong>
+          </div>
+          <a routerLink="/order" class="btn btn-primary">Proceed to Order</a>
+        </div>
+      </section>
+    </div>

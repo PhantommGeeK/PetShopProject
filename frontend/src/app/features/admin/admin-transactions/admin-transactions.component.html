@@ -1,0 +1,29 @@
+    <div class="admin-page" id="admin-transactions-page">
+      <div class="page-header"><h1>Manage Transactions</h1></div>
+      <div class="filter-row">
+        <select [(ngModel)]="statusFilter" (ngModelChange)="onStatusChange()" id="tx-status-filter">
+          <option value="">All Statuses</option>
+          <option value="PENDING">Pending</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="CANCELLED">Cancelled</option>
+          <option value="REFUNDED">Refunded</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <div style="overflow-x:auto"><table class="data-table">
+          <thead><tr><th>ID</th><th>Date</th><th>Amount</th><th>Status</th><th>Customer</th><th>Pet</th><th>Actions</th></tr></thead>
+          <tbody><tr *ngFor="let t of transactions"><td>{{ t.transactionId }}</td><td>{{ t.transactionDate }}</td><td>{{ t.amount | currencyInr }}</td>
+            <td><span class="badge" [ngClass]="getStatusClass(t.transactionStatus)">{{ t.transactionStatus }}</span></td>
+            <td>{{ t.customers?.firstName }} {{ t.customers?.lastName }}</td><td>{{ t.pet?.name }}</td>
+            <td>
+              <select class="status-select" [ngModel]="t.transactionStatus" (ngModelChange)="updateStatus(t.transactionId, $event)">
+                <option value="PENDING">Pending</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="CANCELLED">Cancelled</option>
+                <option value="REFUNDED">Refunded</option>
+              </select>
+            </td>
+          </tr></tbody>
+        </table></div>
+      </div>
+    </div>

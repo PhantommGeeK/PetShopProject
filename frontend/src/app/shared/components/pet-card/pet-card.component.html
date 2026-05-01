@@ -1,0 +1,29 @@
+    <div class="pet-card card" [id]="'pet-card-' + pet.petId">
+      <a [routerLink]="['/pets', pet.petId]" class="card-link">
+        <div class="card-image" [class.placeholder]="!pet.imageUrl">
+          <img *ngIf="pet.imageUrl" [src]="pet.imageUrl" [alt]="pet.name" loading="lazy">
+          <div *ngIf="!pet.imageUrl" class="image-placeholder">
+            <svg viewBox="0 0 100 100" width="48" height="48" fill="currentColor">
+              <circle cx="30" cy="20" r="10"/>
+              <circle cx="70" cy="20" r="10"/>
+              <circle cx="15" cy="45" r="8"/>
+              <circle cx="85" cy="45" r="8"/>
+              <ellipse cx="50" cy="70" rx="25" ry="20"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="card-top">
+            <h3 class="pet-name">{{ pet.name }}</h3>
+            <span class="pet-price">{{ pet.price | currencyInr }}</span>
+          </div>
+          <p class="pet-meta">{{ pet.breed }} · {{ pet.age }} yrs</p>
+        </div>
+      </a>
+      <div class="card-actions">
+        <button class="btn btn-primary btn-full btn-sm" id="add-cart-{{pet.petId}}" (click)="addToCart()">
+          🛒 Add to Cart
+        </button>
+      </div>
+    </div>

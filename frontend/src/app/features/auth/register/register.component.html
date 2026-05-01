@@ -1,0 +1,86 @@
+    <div class="auth-page" id="register-page">
+      <div class="auth-card animate-scale" style="max-width:560px">
+        <div class="auth-logo">🐾</div>
+        <h1>Create Account</h1>
+        <p class="auth-subtitle">Join PetShop today</p>
+        <div class="tab-switcher">
+          <button [class.active]="activeTab==='customer'" (click)="activeTab='customer'">Customer</button>
+          <button [class.active]="activeTab==='supplier'" (click)="activeTab='supplier'">Supplier</button>
+          <button [class.active]="activeTab==='employee'" (click)="activeTab='employee'">Employee</button>
+        </div>
+
+        <!-- Customer Form -->
+        <form *ngIf="activeTab==='customer'" (ngSubmit)="registerCustomer()">
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input [(ngModel)]="cust.firstName" name="fn" required></div>
+            <div class="form-group"><label>Last Name</label><input [(ngModel)]="cust.lastName" name="ln" required></div>
+          </div>
+          <div class="form-group"><label>Email</label><input type="email" [(ngModel)]="cust.email" name="em" required></div>
+          <div class="form-group"><label>Phone (10 digits)</label><input [(ngModel)]="cust.phoneNumber" name="ph" required placeholder="9876543210"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Username</label><input [(ngModel)]="cust.username" name="un" required></div>
+            <div class="form-group"><label>Password</label><input type="password" [(ngModel)]="cust.password" name="pw" required minlength="6"></div>
+          </div>
+          <div class="address-section">
+            <h4>Address</h4>
+            <div class="form-group"><label>Street</label><input [(ngModel)]="cust.address.street" name="cst" required></div>
+            <div class="form-row">
+              <div class="form-group"><label>City</label><input [(ngModel)]="cust.address.city" name="cci" required></div>
+              <div class="form-group"><label>State</label><input [(ngModel)]="cust.address.state" name="csa" required></div>
+            </div>
+            <div class="form-group"><label>ZIP Code (6 digits)</label><input [(ngModel)]="cust.address.zipCode" name="czp" required placeholder="201001"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" [disabled]="loading">{{ loading ? 'Registering...' : 'Register as Customer' }}</button>
+        </form>
+
+        <!-- Supplier Form -->
+        <form *ngIf="activeTab==='supplier'" (ngSubmit)="registerSupplier()">
+          <div class="form-group"><label>Company Name</label><input [(ngModel)]="supp.name" name="sn" required></div>
+          <div class="form-group"><label>Contact Person</label><input [(ngModel)]="supp.contactPerson" name="cp" required></div>
+          <div class="form-group"><label>Email</label><input type="email" [(ngModel)]="supp.email" name="se" required></div>
+          <div class="form-group"><label>Phone (10 digits)</label><input [(ngModel)]="supp.phoneNumber" name="sp" required placeholder="9876543210"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Username</label><input [(ngModel)]="supp.username" name="su" required></div>
+            <div class="form-group"><label>Password</label><input type="password" [(ngModel)]="supp.password" name="spw" required minlength="6"></div>
+          </div>
+          <div class="address-section">
+            <h4>Address</h4>
+            <div class="form-group"><label>Street</label><input [(ngModel)]="supp.address.street" name="sst" required></div>
+            <div class="form-row">
+              <div class="form-group"><label>City</label><input [(ngModel)]="supp.address.city" name="sci" required></div>
+              <div class="form-group"><label>State</label><input [(ngModel)]="supp.address.state" name="ssa" required></div>
+            </div>
+            <div class="form-group"><label>ZIP Code (6 digits)</label><input [(ngModel)]="supp.address.zipCode" name="szp" required placeholder="201001"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" [disabled]="loading">{{ loading ? 'Registering...' : 'Register as Supplier' }}</button>
+        </form>
+
+        <!-- Employee Form -->
+        <form *ngIf="activeTab==='employee'" (ngSubmit)="registerEmployee()">
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input [(ngModel)]="emp.firstName" name="efn" required></div>
+            <div class="form-group"><label>Last Name</label><input [(ngModel)]="emp.lastName" name="eln" required></div>
+          </div>
+          <div class="form-group"><label>Position</label><input [(ngModel)]="emp.position" name="epos" required></div>
+          <div class="form-group"><label>Hire Date</label><input type="date" [(ngModel)]="emp.hireDate" name="ehd" required></div>
+          <div class="form-group"><label>Email</label><input type="email" [(ngModel)]="emp.email" name="eem" required></div>
+          <div class="form-group"><label>Phone (10 digits)</label><input [(ngModel)]="emp.phoneNumber" name="eph" required placeholder="9876543210"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Username</label><input [(ngModel)]="emp.username" name="eun" required></div>
+            <div class="form-group"><label>Password</label><input type="password" [(ngModel)]="emp.password" name="epw" required minlength="6"></div>
+          </div>
+          <div class="address-section">
+            <h4>Address</h4>
+            <div class="form-group"><label>Street</label><input [(ngModel)]="emp.address.street" name="est" required></div>
+            <div class="form-row">
+              <div class="form-group"><label>City</label><input [(ngModel)]="emp.address.city" name="eci" required></div>
+              <div class="form-group"><label>State</label><input [(ngModel)]="emp.address.state" name="esa" required></div>
+            </div>
+            <div class="form-group"><label>ZIP Code (6 digits)</label><input [(ngModel)]="emp.address.zipCode" name="ezp" required placeholder="201001"></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" [disabled]="loading">{{ loading ? 'Registering...' : 'Register as Employee' }}</button>
+        </form>
+
+        <p class="auth-footer">Already have an account? <a routerLink="/login">Login</a></p>
+      </div>
+    </div>

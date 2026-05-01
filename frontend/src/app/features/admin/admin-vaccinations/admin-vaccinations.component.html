@@ -1,0 +1,24 @@
+    <div class="admin-page" id="admin-vaccinations-page">
+      <div class="page-header"><h1>Manage Vaccinations</h1><button class="btn btn-primary" (click)="openModal()">+ Add Vaccination</button></div>
+      <div class="table-wrapper">
+        <div class="search-bar"><input placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="filter()"></div>
+        <div style="overflow-x:auto"><table class="data-table">
+          <thead><tr><th>ID</th><th>Name</th><th>Description</th><th>Price</th><th>Available</th><th>Actions</th></tr></thead>
+          <tbody><tr *ngFor="let v of filtered"><td>{{ v.vaccinationId }}</td><td>{{ v.name }}</td><td>{{ v.description | slice:0:50 }}...</td><td>{{ v.price | currencyInr }}</td>
+            <td><span class="badge" [class.badge-unavailable]="!v.available">{{ v.available ? 'Yes' : 'No' }}</span></td>
+            <td><button class="btn btn-accent btn-sm" (click)="edit(v)">Edit</button><button class="btn btn-danger btn-sm" (click)="confirmDel(v)" style="margin-left:4px">Delete</button></td>
+          </tr></tbody>
+        </table></div>
+      </div>
+      <div class="modal-overlay" *ngIf="showModal" (click)="showModal=false"><div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header"><h2>{{ editingId ? 'Edit' : 'Add' }} Vaccination</h2><button class="modal-close" (click)="showModal=false">×</button></div>
+        <form (ngSubmit)="save()">
+          <div class="form-group"><label>Name</label><input [(ngModel)]="form.name" name="n" required></div>
+          <div class="form-group"><label>Description</label><textarea [(ngModel)]="form.description" name="d" required></textarea></div>
+          <div class="form-group"><label>Price</label><input type="number" [(ngModel)]="form.price" name="p" required></div>
+          <div class="form-group"><label><input type="checkbox" [(ngModel)]="form.available" name="a"> Available</label></div>
+          <button type="submit" class="btn btn-primary btn-full">{{ editingId ? 'Update' : 'Create' }}</button>
+        </form>
+      </div></div>
+      <app-confirm-dialog [show]="showConfirm" (confirmed)="deleteItem()" (cancelled)="showConfirm=false"></app-confirm-dialog>
+    </div>

@@ -1,0 +1,7 @@
+    .filter-row { margin-bottom: var(--space-4); }
+    .filter-row select, .status-select { padding: var(--space-2) var(--space-3); border: 2px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.85rem; background: var(--color-surface); }
+    .status-select { font-size: 0.8rem; padding: 4px 8px; }
+    .badge-completed { background: var(--color-badge); }
+    .badge-pending { background: var(--color-accent); }
+    .badge-cancelled { background: var(--color-danger); }
+    .badge-refunded { background: var(--color-text-muted); }

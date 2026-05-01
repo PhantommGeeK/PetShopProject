@@ -1,0 +1,42 @@
+:root {
+  // Colors
+  --color-primary:      #2D5A27;
+  --color-primary-dark: #1E3D1A;
+  --color-secondary:    #5A7A3A;
+  --color-accent:       #C8882A;
+  --color-bg:           #FAF6EE;
+  --color-surface:      #FFFFFF;
+  --color-surface-tint: #F2EDE3;
+  --color-text:         #2B2B2B;
+  --color-text-muted:   #6B6B6B;
+  --color-badge:        #4CAF50;
+  --color-danger:       #C0392B;
+  --color-border:       #E0D9CC;
+
+  // Typography
+  --font-logo:    'Pacifico', cursive;
+  --font-display: 'Playfair Display', serif;
+  --font-body:    'Nunito', sans-serif;
+
+  // Spacing (8px base)
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+
+  // Border radius
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   24px;
+  --radius-pill: 999px;
+
+  // Shadows
+  --shadow-card:  0 2px 12px rgba(0, 0, 0, 0.07);
+  --shadow-hover: 0 8px 28px rgba(0, 0, 0, 0.13);
+  --shadow-nav:   0 2px 16px rgba(0, 0, 0, 0.12);
+}
