@@ -1,1 +1,0 @@
-import{aa as i}from"./chunk-TCBJD25B.js";var o=(()=>{class r{transform(t){return t==null?"\u20B90":"\u20B9"+(typeof t=="string"?parseFloat(t):t).toLocaleString("en-IN",{minimumFractionDigits:0,maximumFractionDigits:2})}static{this.\u0275fac=function(n){return new(n||r)}}static{this.\u0275pipe=i({name:"currencyInr",type:r,pure:!0,standalone:!0})}}return r})();export{o as a};
