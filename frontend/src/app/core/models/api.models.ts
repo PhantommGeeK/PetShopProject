@@ -177,6 +177,9 @@ export interface TransactionRequestDTO {
   quantity: number;
   customerId: number;
   petId?: number | null;
+  foodId?: number | null;
+  groomingServiceId?: number | null;
+  vaccinationId?: number | null;
 }
 
 // Auth

@@ -61,7 +61,10 @@ export class OrderComponent implements OnInit {
       itemName: item.name,
       quantity: item.quantity,
       customerId,
-      petId: item.itemType === 'pet' ? item.itemId : null
+      petId: item.itemType === 'pet' ? item.itemId : null,
+      foodId: item.itemType === 'food' ? item.itemId : null,
+      groomingServiceId: item.itemType === 'grooming' ? item.itemId : null,
+      vaccinationId: item.itemType === 'vaccination' ? item.itemId : null
     }));
 
     this.placingOrder = true;

@@ -30,6 +30,12 @@ public class TransactionRequestDTO {
 
     private Integer petId;
 
+    private Integer foodId;
+
+    private Integer groomingServiceId;
+
+    private Integer vaccinationId;
+
     
     public TransactionRequestDTO() {}
    
@@ -96,5 +102,29 @@ public class TransactionRequestDTO {
 
     public void setPetId(Integer petId) {
         this.petId = petId;
+    }
+
+    public Integer getFoodId() {
+        return foodId;
+    }
+
+    public void setFoodId(Integer foodId) {
+        this.foodId = foodId;
+    }
+
+    public Integer getGroomingServiceId() {
+        return groomingServiceId;
+    }
+
+    public void setGroomingServiceId(Integer groomingServiceId) {
+        this.groomingServiceId = groomingServiceId;
+    }
+
+    public Integer getVaccinationId() {
+        return vaccinationId;
+    }
+
+    public void setVaccinationId(Integer vaccinationId) {
+        this.vaccinationId = vaccinationId;
     }
 }

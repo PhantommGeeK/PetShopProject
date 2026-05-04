@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cg.dto.CustomersResponseDTO;
 import com.cg.dto.PetCategoryResponseDTO;
@@ -12,12 +13,19 @@ import com.cg.dto.PetResponseDTO;
 import com.cg.dto.TransactionRequestDTO;
 import com.cg.dto.TransactionResponseDTO;
 import com.cg.entity.Customers;
+import com.cg.entity.GroomingServices;
 import com.cg.entity.Pet;
+import com.cg.entity.PetFood;
 import com.cg.entity.Transaction;
+import com.cg.entity.Vaccination;
+import com.cg.exception.InvalidRequestException;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.CustomersRepository;
+import com.cg.repo.GroomingServicesRepository;
+import com.cg.repo.PetFoodRepository;
 import com.cg.repo.PetRepository;
 import com.cg.repo.TransactionRepository;
+import com.cg.repo.VaccinationRepository;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -30,6 +38,15 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private PetRepository petRepository;
+
+    @Autowired
+    private PetFoodRepository petFoodRepository;
+
+    @Autowired
+    private GroomingServicesRepository groomingServicesRepository;
+
+    @Autowired
+    private VaccinationRepository vaccinationRepository;
 
    
     @Override
@@ -59,6 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
 
    
     @Override
+    @Transactional
     public TransactionResponseDTO addTransaction(TransactionRequestDTO dto) {
 
         
@@ -85,7 +103,53 @@ public class TransactionServiceImpl implements TransactionService {
 
         
         Transaction saved = transactionRepository.save(t);
+        reducePetFoodQuantityIfSuccessful(dto);
+        markServiceUnavailableIfSuccessful(dto);
         return convertToResponseDTO(saved);
+    }
+
+    private void reducePetFoodQuantityIfSuccessful(TransactionRequestDTO dto) {
+        if (!"SUCCESS".equalsIgnoreCase(dto.getTransactionStatus())
+                || !"FOOD".equalsIgnoreCase(dto.getItemType())
+                || dto.getFoodId() == null) {
+            return;
+        }
+
+        PetFood petFood = petFoodRepository.findById(dto.getFoodId())
+                .orElseThrow(() -> new ResourceNotFoundException("PetFood", dto.getFoodId()));
+
+        int currentQuantity = petFood.getQuantity() == null ? 0 : petFood.getQuantity();
+        if (currentQuantity <= 0) {
+            throw new InvalidRequestException("Pet food is out of stock");
+        }
+
+        petFood.setQuantity(currentQuantity - 1);
+        petFoodRepository.save(petFood);
+    }
+
+    private void markServiceUnavailableIfSuccessful(TransactionRequestDTO dto) {
+        if (!"SUCCESS".equalsIgnoreCase(dto.getTransactionStatus())) {
+            return;
+        }
+
+        if ("GROOMING".equalsIgnoreCase(dto.getItemType()) && dto.getGroomingServiceId() != null) {
+            GroomingServices service = groomingServicesRepository.findById(dto.getGroomingServiceId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Grooming Service", dto.getGroomingServiceId()));
+            if (service.isAvailable()) {
+                service.setAvailable(false);
+                groomingServicesRepository.save(service);
+            }
+            return;
+        }
+
+        if ("VACCINATION".equalsIgnoreCase(dto.getItemType()) && dto.getVaccinationId() != null) {
+            Vaccination vaccination = vaccinationRepository.findById(dto.getVaccinationId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Vaccination", dto.getVaccinationId()));
+            if (Boolean.TRUE.equals(vaccination.getAvailable())) {
+                vaccination.setAvailable(false);
+                vaccinationRepository.save(vaccination);
+            }
+        }
     }
 
     
