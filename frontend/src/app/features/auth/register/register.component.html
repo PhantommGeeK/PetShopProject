@@ -6,7 +6,7 @@
         <div class="tab-switcher">
           <button [class.active]="activeTab==='customer'" (click)="activeTab='customer'">Customer</button>
           <button [class.active]="activeTab==='supplier'" (click)="activeTab='supplier'">Supplier</button>
-          <button [class.active]="activeTab==='employee'" (click)="activeTab='employee'">Employee</button>
+          <button *ngIf="authService.isAdmin()" [class.active]="activeTab==='employee'" (click)="activeTab='employee'">Employee</button>
         </div>
 
         <!-- Customer Form -->

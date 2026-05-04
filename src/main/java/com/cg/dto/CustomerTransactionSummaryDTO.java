@@ -7,8 +7,10 @@ public class CustomerTransactionSummaryDTO {
     private String firstName;
     private String lastName;
     private List<Integer> transactionIds;
+    private List<TransactionResponseDTO> transactions;
     private Long totalTransactions;
     private Long successfulPurchases;
+    private Double totalAmount;
 
     public CustomerTransactionSummaryDTO() {
     }
@@ -55,6 +57,14 @@ public class CustomerTransactionSummaryDTO {
 		this.transactionIds = transactionIds;
 	}
 
+	public List<TransactionResponseDTO> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<TransactionResponseDTO> transactions) {
+		this.transactions = transactions;
+	}
+
 	public Long getTotalTransactions() {
 		return totalTransactions;
 	}
@@ -69,6 +79,14 @@ public class CustomerTransactionSummaryDTO {
 
 	public void setSuccessfulPurchases(Long successfulPurchases) {
 		this.successfulPurchases = successfulPurchases;
+	}
+
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
    

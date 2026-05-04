@@ -11,7 +11,10 @@ import com.cg.dto.AddressesResponseDTO;
 import com.cg.dto.CustomerTransactionSummaryDTO;
 import com.cg.dto.CustomersRequestDTO;
 import com.cg.dto.CustomersResponseDTO;
+import com.cg.dto.PetCategoryResponseDTO;
+import com.cg.dto.PetResponseDTO;
 import com.cg.dto.SuccessDTO;
+import com.cg.dto.TransactionResponseDTO;
 import com.cg.entity.Addresses;
 import com.cg.entity.Customers;
 import com.cg.entity.Transaction;
@@ -51,6 +54,36 @@ public class CustomersServiceImpl implements CustomersService {
         responseDTO.setPhoneNumber(customer.getPhoneNumber());
         responseDTO.setAddress(convertAddressToDTO(customer.getAddress()));
         return responseDTO;
+    }
+
+    private TransactionResponseDTO convertTransactionToDTO(Transaction transaction) {
+        PetResponseDTO petDTO = null;
+        if (transaction.getPet() != null) {
+            petDTO = new PetResponseDTO();
+            petDTO.setPetId(transaction.getPet().getPetId());
+            petDTO.setName(transaction.getPet().getName());
+            petDTO.setBreed(transaction.getPet().getBreed());
+            petDTO.setAge(transaction.getPet().getAge());
+            petDTO.setPrice(transaction.getPet().getPrice());
+            petDTO.setDescription(transaction.getPet().getDescription());
+            petDTO.setImageUrl(transaction.getPet().getImageUrl());
+
+            if (transaction.getPet().getPetCategory() != null) {
+                petDTO.setCategory(PetCategoryResponseDTO.fromEntity(transaction.getPet().getPetCategory()));
+            }
+        }
+
+        return new TransactionResponseDTO(
+                transaction.getTransactionId(),
+                transaction.getTransactionDate(),
+                transaction.getAmount(),
+                transaction.getTransactionStatus(),
+                transaction.getItemType(),
+                transaction.getItemName(),
+                transaction.getQuantity(),
+                convertToResponseDTO(transaction.getCustomer()),
+                petDTO
+        );
     }
 
     private Customers convertToEntity(CustomersRequestDTO requestDTO, Addresses address) {
@@ -159,13 +192,23 @@ public class CustomersServiceImpl implements CustomersService {
             }
         }
 
+        List<TransactionResponseDTO> transactions = txList == null
+                ? new ArrayList<>()
+                : txList.stream()
+                        .map(this::convertTransactionToDTO)
+                        .collect(Collectors.toList());
+
         long totalTransactions = txList == null ? 0 : txList.size();
 
         long successfulPurchases = 0;
+        double totalAmount = 0;
         if (txList != null) {
             for (Transaction t : txList) {
                 if ("SUCCESS".equalsIgnoreCase(t.getTransactionStatus())) {
                     successfulPurchases++;
+                }
+                if (t.getAmount() != null) {
+                    totalAmount += t.getAmount();
                 }
             }
         }
@@ -175,8 +218,10 @@ public class CustomersServiceImpl implements CustomersService {
         summaryDTO.setFirstName(customer.getFirstName());
         summaryDTO.setLastName(customer.getLastName());
         summaryDTO.setTransactionIds(transactionIds);
+        summaryDTO.setTransactions(transactions);
         summaryDTO.setTotalTransactions(totalTransactions);
         summaryDTO.setSuccessfulPurchases(successfulPurchases);
+        summaryDTO.setTotalAmount(totalAmount);
 
         return summaryDTO;
     }

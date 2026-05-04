@@ -1,6 +1,7 @@
 package com.cg.repo;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,5 +13,7 @@ public interface SupplierRepository extends JpaRepository<Supplier, Integer>
 	List<Supplier> findByNameContainingIgnoreCase(String name);
 
 	List<Supplier> findByAddress_CityIgnoreCase(String city);
+	boolean existsBySupplierIdAndUserUsername(Integer supplierId, String username);
+	Optional<Supplier> findByUserUsername(String username);
 
 }

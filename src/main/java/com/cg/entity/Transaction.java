@@ -17,6 +17,12 @@ public class Transaction {
 
     private String transactionStatus;
 
+    private String itemType;
+
+    private String itemName;
+
+    private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customers customer;
@@ -55,6 +61,30 @@ public class Transaction {
 
 	public void setTransactionStatus(String transactionStatus) {
 		this.transactionStatus = transactionStatus;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public Customers getCustomer() {

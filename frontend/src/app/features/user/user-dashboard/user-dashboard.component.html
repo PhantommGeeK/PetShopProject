@@ -1,0 +1,174 @@
+<div class="user-dashboard" id="user-dashboard-page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">My Dashboard</p>
+      <h1>{{ displayName() }}</h1>
+    </div>
+    <span class="badge">{{ roleLabel() }}</span>
+  </div>
+
+  <div *ngIf="loading" class="info-panel">Loading your details...</div>
+
+  <ng-container *ngIf="!loading">
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Account</h2>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span>User ID</span>
+          <strong>{{ user?.userId || 'N/A' }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Username</span>
+          <strong>{{ user?.username || 'N/A' }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Role</span>
+          <strong>{{ roleLabel() }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Profile ID</span>
+          <strong>{{ user?.profileId || 'N/A' }}</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" *ngIf="profile">
+      <div class="panel-header">
+        <h2>Profile</h2>
+      </div>
+
+      <div class="detail-grid" *ngIf="'firstName' in profile">
+        <div class="detail-item">
+          <span>First Name</span>
+          <strong>{{ profile.firstName }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Last Name</span>
+          <strong>{{ profile.lastName }}</strong>
+        </div>
+        <div class="detail-item" *ngIf="'position' in profile">
+          <span>Position</span>
+          <strong>{{ profile.position }}</strong>
+        </div>
+        <div class="detail-item" *ngIf="'hireDate' in profile">
+          <span>Hire Date</span>
+          <strong>{{ profile.hireDate }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Email</span>
+          <strong>{{ profile.email }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Phone Number</span>
+          <strong>{{ profile.phoneNumber }}</strong>
+        </div>
+      </div>
+
+      <div class="detail-grid" *ngIf="'name' in profile">
+        <div class="detail-item">
+          <span>Name</span>
+          <strong>{{ profile.name }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Contact Person</span>
+          <strong>{{ profile.contactPerson }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Email</span>
+          <strong>{{ profile.email }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Phone Number</span>
+          <strong>{{ profile.phoneNumber }}</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" *ngIf="profile?.address">
+      <div class="panel-header">
+        <h2>Address</h2>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-item span-2">
+          <span>Street</span>
+          <strong>{{ profile?.address?.street }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>City</span>
+          <strong>{{ profile?.address?.city }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>State</span>
+          <strong>{{ profile?.address?.state }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>ZIP Code</span>
+          <strong>{{ profile?.address?.zipCode }}</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" *ngIf="user?.role === 'ROLE_CUSTOMER'">
+      <div class="panel-header">
+        <h2>My Transactions</h2>
+        <span class="badge" *ngIf="transactions">{{ transactions.totalTransactions || 0 }}</span>
+      </div>
+
+      <div *ngIf="transactionsLoading" class="info-panel compact">Loading your transactions...</div>
+
+      <ng-container *ngIf="!transactionsLoading">
+        <div class="transaction-summary" *ngIf="transactions">
+          <div class="detail-item">
+            <span>Total Orders</span>
+            <strong>{{ transactions.totalTransactions || 0 }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>Successful</span>
+            <strong>{{ transactions.successfulPurchases || 0 }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>Total Spent</span>
+            <strong>{{ (transactions.totalAmount || 0) | currency:'INR':'symbol':'1.0-0' }}</strong>
+          </div>
+        </div>
+
+        <div class="transaction-table" *ngIf="transactions?.transactions?.length; else noTransactions">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let transaction of transactions?.transactions">
+                <td>#{{ transaction.transactionId }}</td>
+                <td>{{ transaction.transactionDate }}</td>
+                <td>{{ transaction.pet?.name || transaction.itemName || 'N/A' }}</td>
+                <td>{{ transaction.quantity || 1 }}</td>
+                <td>{{ transaction.amount | currency:'INR':'symbol':'1.0-0' }}</td>
+                <td><span class="status-pill">{{ transaction.transactionStatus }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #noTransactions>
+          <div class="info-panel compact">No transactions yet.</div>
+        </ng-template>
+      </ng-container>
+    </section>
+
+    <section class="info-panel" *ngIf="!profile && user?.role !== 'ROLE_ADMIN'">
+      A profile record is not linked to this account yet.
+    </section>
+  </ng-container>
+</div>

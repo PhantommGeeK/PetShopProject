@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,31 +31,36 @@ public class CustomersController {
     private CustomersService customersService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CustomersResponseDTO>> getAllCustomers() {
         List<CustomersResponseDTO> customers = customersService.getAllCustomers();
         return ResponseEntity.ok(customers);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE') or @authz.isCustomerOwner(#id, authentication)")
     public ResponseEntity<CustomersResponseDTO> getCustomerById(@PathVariable Integer id) {
         CustomersResponseDTO customer = customersService.getCustomerById(id);
         return ResponseEntity.ok(customer);
     }
 
     @GetMapping("/email/{email}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE') or @authz.isCustomerEmailOwner(#email, authentication)")
     public ResponseEntity<CustomersResponseDTO> getCustomerByEmail(@PathVariable String email) {
         CustomersResponseDTO customer = customersService.getCustomerByEmail(email);
         return ResponseEntity.ok(customer);
     }
 
     @GetMapping("/{id}/transactions")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE') or @authz.isCustomerOwner(#id, authentication)")
     public ResponseEntity<CustomerTransactionSummaryDTO> getCustomerTransactions(
             @PathVariable Integer id) {
         CustomerTransactionSummaryDTO summary = customersService.getCustomerTransactionSummary(id);
         return ResponseEntity.ok(summary);
     }
     
-    @GetMapping("/{city}")
+    @GetMapping("/city/{city}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CustomersResponseDTO>> getCustomersByCity(@PathVariable String city) {
 		List<CustomersResponseDTO> customers = customersService.getCustomersByCity(city);
 		return ResponseEntity.ok(customers);
@@ -68,6 +74,7 @@ public class CustomersController {
 //    }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @authz.isCustomerOwner(#id, authentication)")
     public ResponseEntity<CustomersResponseDTO> updateCustomer(
             @PathVariable Integer id,
             @Valid @RequestBody CustomersRequestDTO requestDTO) {
@@ -76,6 +83,7 @@ public class CustomersController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @authz.isCustomerOwner(#id, authentication)")
     public ResponseEntity<SuccessDTO> deleteCustomer(@PathVariable Integer id) {
         SuccessDTO response = customersService.deleteCustomer(id);
         return ResponseEntity.ok(response);

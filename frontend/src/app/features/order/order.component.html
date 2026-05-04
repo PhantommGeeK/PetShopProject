@@ -22,7 +22,9 @@
             <label>Address</label>
             <textarea [(ngModel)]="address" name="address" rows="4" placeholder="Complete address" required></textarea>
           </div>
-          <button class="btn btn-primary btn-full" (click)="placeOrder()">Place Order</button>
+          <button class="btn btn-primary btn-full" (click)="placeOrder()" [disabled]="placingOrder">
+            {{ placingOrder ? 'Placing Order...' : 'Place Order' }}
+          </button>
         </section>
 
         <section class="card order-summary">

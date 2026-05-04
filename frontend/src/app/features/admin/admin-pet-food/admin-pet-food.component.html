@@ -1,12 +1,12 @@
     <div class="admin-page" id="admin-pet-food-page">
-      <div class="page-header"><h1>Manage Pet Food</h1><button class="btn btn-primary" (click)="openModal()">+ Add Food</button></div>
+      <div class="page-header"><h1>Manage Pet Food</h1><button *ngIf="authService.isAdmin()" class="btn btn-primary" (click)="openModal()">+ Add Food</button></div>
       <div class="table-wrapper">
         <div class="search-bar"><input placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="filter()"></div>
         <div style="overflow-x:auto"><table class="data-table">
           <thead><tr><th>ID</th><th>Name</th><th>Brand</th><th>Type</th><th>Qty</th><th>Price</th><th>Actions</th></tr></thead>
           <tbody><tr *ngFor="let f of filtered"><td>{{ f.foodId }}</td><td>{{ f.name }}</td><td>{{ f.brand }}</td><td>{{ f.type }}</td><td>{{ f.quantity }}</td><td>{{ f.price | currencyInr }}</td><td>
             <button class="btn btn-accent btn-sm" (click)="edit(f)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="confirmDel(f)" style="margin-left:4px">Delete</button>
+            <button *ngIf="authService.canDeleteCatalog()" class="btn btn-danger btn-sm" (click)="confirmDel(f)" style="margin-left:4px">Delete</button>
           </td></tr></tbody>
         </table></div>
       </div>

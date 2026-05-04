@@ -30,6 +30,12 @@ export class AuthService {
           const username = payload.sub || payload.username || credentials.username;
           localStorage.setItem('petshop_role', role);
           localStorage.setItem('petshop_username', username);
+          if (payload.userId) {
+            localStorage.setItem('petshop_user_id', String(payload.userId));
+          }
+          if (payload.profileId) {
+            localStorage.setItem('petshop_profile_id', String(payload.profileId));
+          }
         }
         this.loggedIn.next(true);
         this.currentRole.next(this.getRole());
@@ -50,13 +56,31 @@ export class AuthService {
   }
 
   getMe(): Observable<UserInfo> {
-    return this.http.get<UserInfo>(`${this.baseUrl}/me`);
+    return this.http.get<UserInfo>(`${this.baseUrl}/me`).pipe(
+      tap(user => {
+        if (user?.username) {
+          localStorage.setItem('petshop_username', user.username);
+        }
+        if (user?.role) {
+          localStorage.setItem('petshop_role', user.role);
+        }
+        if (user?.userId) {
+          localStorage.setItem('petshop_user_id', String(user.userId));
+        }
+        if (user?.profileId) {
+          localStorage.setItem('petshop_profile_id', String(user.profileId));
+        }
+        this.currentRole.next(this.getRole());
+      })
+    );
   }
 
   logout(): void {
     localStorage.removeItem('petshop_token');
     localStorage.removeItem('petshop_role');
     localStorage.removeItem('petshop_username');
+    localStorage.removeItem('petshop_user_id');
+    localStorage.removeItem('petshop_profile_id');
     this.loggedIn.next(false);
     this.currentRole.next('');
   }
@@ -71,6 +95,11 @@ export class AuthService {
 
   getUsername(): string {
     return localStorage.getItem('petshop_username') || '';
+  }
+
+  getProfileId(): number | null {
+    const profileId = localStorage.getItem('petshop_profile_id');
+    return profileId ? Number(profileId) : null;
   }
 
   getToken(): string | null {
@@ -94,7 +123,15 @@ export class AuthService {
   }
 
   hasAdminAccess(): boolean {
+    return this.isAdmin();
+  }
+
+  canManageOperations(): boolean {
     return this.isAdmin() || this.isEmployee();
+  }
+
+  canDeleteCatalog(): boolean {
+    return this.isAdmin();
   }
 
   private decodeToken(token: string): any {

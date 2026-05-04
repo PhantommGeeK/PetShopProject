@@ -12,5 +12,7 @@ import com.cg.entity.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
 	List<Employee> findByPosition(String position);
+	boolean existsByEmployeeIdAndUserUsername(Integer employeeId, String username);
+	Optional<Employee> findByUserUsername(String username);
 
 }

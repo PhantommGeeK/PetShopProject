@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SupplierService } from '../../../core/services/supplier.service';
 import { PetService } from '../../../core/services/pet.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { SupplierResponseDTO, SupplierRequestDTO, PetResponseDTO } from '../../../core/models/api.models';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
@@ -20,12 +21,13 @@ export class AdminSuppliersComponent implements OnInit {
   supplierPets: PetResponseDTO[] = [];
   form: SupplierRequestDTO = { name: '', contactPerson: '', phoneNumber: '', email: '', addressId: 1 };
 
-  constructor(private svc: SupplierService, private petSvc: PetService, private toast: ToastService) {}
+  constructor(private svc: SupplierService, private petSvc: PetService, private toast: ToastService, public authService: AuthService) {}
   ngOnInit(): void { this.load(); }
   load(): void { this.svc.getAll().subscribe({ next: d => { this.items = d; this.filter(); }, error: e => this.toast.handleHttpError(e) }); }
   filter(): void { const t = this.searchTerm.toLowerCase(); this.filtered = this.items.filter(s => s.name.toLowerCase().includes(t) || s.contactPerson.toLowerCase().includes(t)); }
 
   edit(s: SupplierResponseDTO): void {
+    if (!this.authService.isAdmin()) return;
     this.editingId = s.supplierId;
     this.form = { name: s.name, contactPerson: s.contactPerson, phoneNumber: s.phoneNumber, email: s.email, addressId: s.address?.addressId || 1 };
     this.showModal = true;
@@ -42,6 +44,7 @@ export class AdminSuppliersComponent implements OnInit {
     this.svc.getPets(s.supplierId).subscribe({ next: d => { this.supplierPets = d; this.showPetsModal = true; }, error: () => { this.supplierPets = []; this.showPetsModal = true; } });
   }
   assignPet(): void {
+    if (!this.authService.isAdmin()) return;
     if (!this.selectedSupplierId || !this.assignPetId) return;
     this.svc.assignPet(this.selectedSupplierId, this.assignPetId).subscribe({
       next: () => { this.toast.success('Pet assigned!'); this.managePets({ supplierId: this.selectedSupplierId } as any); this.assignPetId = 0; },
@@ -49,6 +52,7 @@ export class AdminSuppliersComponent implements OnInit {
     });
   }
   removePet(petId: number): void {
+    if (!this.authService.isAdmin()) return;
     if (!this.selectedSupplierId) return;
     this.svc.removePet(this.selectedSupplierId, petId).subscribe({
       next: () => { this.toast.success('Pet removed!'); this.managePets({ supplierId: this.selectedSupplierId } as any); },

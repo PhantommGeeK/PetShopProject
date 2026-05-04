@@ -1,0 +1,132 @@
+<div class="supplier-page" id="supplier-dashboard-page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Supplier Dashboard</p>
+      <h1>{{ profile?.name || 'Supplier' }}</h1>
+    </div>
+    <span class="badge">Supplier</span>
+  </div>
+
+  <div *ngIf="loading" class="loading-row">Loading supplier workspace...</div>
+
+  <ng-container *ngIf="!loading">
+    <section class="dashboard-grid">
+      <div class="panel profile-panel">
+        <div class="panel-header">
+          <h2>Profile</h2>
+        </div>
+
+        <form (ngSubmit)="saveProfile()" class="profile-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Name</label>
+              <input [(ngModel)]="form.name" name="name" required>
+            </div>
+            <div class="form-group">
+              <label>Contact Person</label>
+              <input [(ngModel)]="form.contactPerson" name="contactPerson" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input [(ngModel)]="form.phoneNumber" name="phoneNumber" required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" [(ngModel)]="form.email" name="email" required>
+            </div>
+          </div>
+
+          <div class="address-grid" *ngIf="form.address">
+            <div class="form-group span-2">
+              <label>Street</label>
+              <input [(ngModel)]="form.address.street" name="street" required>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input [(ngModel)]="form.address.city" name="city" required>
+            </div>
+            <div class="form-group">
+              <label>State</label>
+              <input [(ngModel)]="form.address.state" name="state" required>
+            </div>
+            <div class="form-group">
+              <label>ZIP Code</label>
+              <input [(ngModel)]="form.address.zipCode" name="zipCode" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" [disabled]="saving">
+            {{ saving ? 'Saving...' : 'Update Profile' }}
+          </button>
+        </form>
+      </div>
+
+      <div class="panel assign-panel">
+        <div class="panel-header">
+          <h2>Assign Existing Pet</h2>
+          <span class="count">{{ availablePets().length }} available</span>
+        </div>
+
+        <div class="assign-row">
+          <select [(ngModel)]="selectedPetId" name="selectedPetId">
+            <option [ngValue]="null">Select pet</option>
+            <option *ngFor="let pet of availablePets()" [ngValue]="pet.petId">
+              #{{ pet.petId }} - {{ pet.name }} ({{ pet.breed }})
+            </option>
+          </select>
+          <button class="btn btn-primary" (click)="assignPet()" [disabled]="!selectedPetId">Assign</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel pets-panel">
+      <div class="panel-header">
+        <h2>Pets You Supply</h2>
+        <span class="count">{{ suppliedPets.length }} assigned</span>
+      </div>
+
+      <div class="empty-state" *ngIf="suppliedPets.length === 0">No pets assigned yet.</div>
+      <div class="pet-grid" *ngIf="suppliedPets.length > 0">
+        <article class="pet-tile" *ngFor="let pet of suppliedPets">
+          <img [src]="pet.imageUrl || 'assets/images/hero-pet.png'" [alt]="pet.name">
+          <div>
+            <h3>{{ pet.name }}</h3>
+            <p>{{ pet.breed }} · {{ pet.category?.name || 'Uncategorized' }}</p>
+            <strong>{{ pet.price | currencyInr }}</strong>
+          </div>
+          <button class="btn btn-danger btn-sm" (click)="removePet(pet.petId)">Remove</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel discovery-panel">
+      <div class="panel-header">
+        <h2>Supplier Discovery</h2>
+      </div>
+
+      <div class="search-row">
+        <select [(ngModel)]="searchMode" name="searchMode">
+          <option value="name">Name</option>
+          <option value="city">City</option>
+          <option value="id">Supplier ID</option>
+        </select>
+        <input [(ngModel)]="searchTerm" name="searchTerm" placeholder="Search suppliers">
+        <button class="btn btn-outline" (click)="searchSuppliers()">Search</button>
+      </div>
+
+      <div class="empty-state" *ngIf="searchResults.length === 0">No supplier results.</div>
+      <div class="supplier-list" *ngIf="searchResults.length > 0">
+        <article class="supplier-row" *ngFor="let supplier of searchResults">
+          <div>
+            <h3>#{{ supplier.supplierId }} {{ supplier.name }}</h3>
+            <p>{{ supplier.contactPerson }} · {{ supplier.email }} · {{ supplier.phoneNumber }}</p>
+            <small>{{ supplier.address?.city || 'City unavailable' }}, {{ supplier.address?.state || 'State unavailable' }}</small>
+          </div>
+        </article>
+      </div>
+    </section>
+  </ng-container>
+</div>

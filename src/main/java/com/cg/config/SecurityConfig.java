@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +26,7 @@ import com.cg.filter.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig 
 {
 	@Autowired
@@ -37,13 +40,48 @@ public class SecurityConfig
 	            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 	            .authenticationProvider(provider)
 	            .authorizeHttpRequests(auth -> auth
-	                    .requestMatchers("/auth/**").permitAll()
+	                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 	                    .requestMatchers("/generateToken").permitAll()
+	                    .requestMatchers(HttpMethod.POST, "/auth/register/employee").hasRole("ADMIN")
+	                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+	                    .requestMatchers(HttpMethod.POST, "/auth/register/customer").permitAll()
+	                    .requestMatchers(HttpMethod.POST, "/auth/register/supplier").permitAll()
+	                    .requestMatchers(HttpMethod.GET, "/auth/me").permitAll()
 
-	                    //.requestMatchers("/api/admin/**").hasRole("ADMIN")
-	                    .requestMatchers("/api/supplier/**").hasAnyRole("SUPPLIER","ADMIN")
-	                    .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER","ADMIN")
-	                    .requestMatchers("/api/employee/**").hasAnyRole("EMPLOYEE","ADMIN")
+	                    .requestMatchers(HttpMethod.GET, "/api/pets/**").permitAll()
+	                    .requestMatchers(HttpMethod.GET, "/api/pet-categories/**").permitAll()
+	                    .requestMatchers(HttpMethod.GET, "/api/pet-foods/**").permitAll()
+	                    .requestMatchers(HttpMethod.GET, "/api/grooming/**").permitAll()
+	                    .requestMatchers(HttpMethod.GET, "/api/vaccinations/**").permitAll()
+
+	                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+	                    .requestMatchers("/api/employees/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.GET, "/api/transactions/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.POST, "/api/transactions/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
+	                    .requestMatchers(HttpMethod.PUT, "/api/transactions/*/status").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers("/api/transactions/**").hasRole("ADMIN")
+	                    .requestMatchers("/api/customers/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
+	                    .requestMatchers("/api/suppliers/**").hasAnyRole("ADMIN", "EMPLOYEE", "SUPPLIER")
+
+	                    .requestMatchers(HttpMethod.POST, "/api/pets/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.PUT, "/api/pets/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.DELETE, "/api/pets/**").hasRole("ADMIN")
+
+	                    .requestMatchers(HttpMethod.POST, "/api/pet-categories/**").hasRole("ADMIN")
+	                    .requestMatchers(HttpMethod.PUT, "/api/pet-categories/**").hasRole("ADMIN")
+	                    .requestMatchers(HttpMethod.DELETE, "/api/pet-categories/**").hasRole("ADMIN")
+
+	                    .requestMatchers(HttpMethod.POST, "/api/pet-foods/**").hasRole("ADMIN")
+	                    .requestMatchers(HttpMethod.PUT, "/api/pet-foods/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.DELETE, "/api/pet-foods/**").hasRole("ADMIN")
+
+	                    .requestMatchers(HttpMethod.POST, "/api/grooming/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.PUT, "/api/grooming/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.DELETE, "/api/grooming/**").hasRole("ADMIN")
+
+	                    .requestMatchers(HttpMethod.POST, "/api/vaccinations/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.PUT, "/api/vaccinations/**").hasAnyRole("ADMIN", "EMPLOYEE")
+	                    .requestMatchers(HttpMethod.DELETE, "/api/vaccinations/**").hasRole("ADMIN")
 
 	                    .anyRequest().authenticated()
 	            )

@@ -33,7 +33,7 @@ export class RegisterComponent {
     address: { street: '', city: '', state: '', zipCode: '' }
   };
 
-  constructor(private authService: AuthService, private toast: ToastService, private router: Router) {}
+  constructor(public authService: AuthService, private toast: ToastService, private router: Router) {}
 
   registerCustomer(): void {
     this.loading = true;
@@ -52,6 +52,7 @@ export class RegisterComponent {
   }
 
   registerEmployee(): void {
+    if (!this.authService.isAdmin()) return;
     this.loading = true;
     this.authService.registerEmployee(this.emp).subscribe({
       next: () => { this.toast.success('Registration successful! Please login.'); this.router.navigate(['/login']); this.loading = false; },

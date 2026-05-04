@@ -23,9 +23,10 @@ export class LoginComponent {
       next: () => {
         this.toast.success('Welcome back!');
         const role = this.authService.getRole();
-        if (role === 'ROLE_CUSTOMER') this.router.navigate(['/']);
-        else if (role === 'ROLE_ADMIN' || role === 'ROLE_EMPLOYEE') this.router.navigate(['/admin/pets']);
-        else if (role === 'ROLE_SUPPLIER') this.router.navigate(['/admin/suppliers']);
+        if (role === 'ROLE_CUSTOMER') this.router.navigate(['/dashboard']);
+        else if (role === 'ROLE_ADMIN') this.router.navigate(['/admin/pets']);
+        else if (role === 'ROLE_EMPLOYEE') this.router.navigate(['/admin/pets']);
+        else if (role === 'ROLE_SUPPLIER') this.router.navigate(['/supplier/dashboard']);
         else this.router.navigate(['/']);
         this.loading = false;
       },

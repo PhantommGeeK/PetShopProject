@@ -43,6 +43,17 @@ export const routes: Routes = [
     path: 'order',
     loadComponent: () => import('./features/order/order.component').then(m => m.OrderComponent)
   },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./features/user/user-dashboard/user-dashboard.component').then(m => m.UserDashboardComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'supplier/dashboard',
+    loadComponent: () => import('./features/supplier/supplier-dashboard/supplier-dashboard.component').then(m => m.SupplierDashboardComponent),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['ROLE_SUPPLIER'] }
+  },
   // Admin routes
   {
     path: 'admin/pets',
@@ -54,7 +65,7 @@ export const routes: Routes = [
     path: 'admin/pet-categories',
     loadComponent: () => import('./features/admin/admin-categories/admin-categories.component').then(m => m.AdminCategoriesComponent),
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] }
+    data: { roles: ['ROLE_ADMIN'] }
   },
   {
     path: 'admin/pet-food',
@@ -78,7 +89,7 @@ export const routes: Routes = [
     path: 'admin/customers',
     loadComponent: () => import('./features/admin/admin-customers/admin-customers.component').then(m => m.AdminCustomersComponent),
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] }
+    data: { roles: ['ROLE_ADMIN'] }
   },
   {
     path: 'admin/employees',
@@ -90,7 +101,7 @@ export const routes: Routes = [
     path: 'admin/suppliers',
     loadComponent: () => import('./features/admin/admin-suppliers/admin-suppliers.component').then(m => m.AdminSuppliersComponent),
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['ROLE_ADMIN', 'ROLE_SUPPLIER'] }
+    data: { roles: ['ROLE_ADMIN', 'ROLE_EMPLOYEE'] }
   },
   {
     path: 'admin/transactions',

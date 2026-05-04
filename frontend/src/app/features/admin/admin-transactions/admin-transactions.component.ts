@@ -36,10 +36,8 @@ export class AdminTransactionsComponent implements OnInit {
 
   getStatusClass(status: string): string {
     switch (status?.toUpperCase()) {
-      case 'COMPLETED': return 'badge-completed';
-      case 'PENDING': return 'badge-pending';
-      case 'CANCELLED': return 'badge-cancelled';
-      case 'REFUNDED': return 'badge-refunded';
+      case 'SUCCESS': return 'badge-completed';
+      case 'FAILED': return 'badge-cancelled';
       default: return '';
     }
   }

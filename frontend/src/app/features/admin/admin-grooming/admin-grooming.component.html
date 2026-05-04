@@ -6,7 +6,7 @@
           <thead><tr><th>ID</th><th>Name</th><th>Description</th><th>Price</th><th>Available</th><th>Actions</th></tr></thead>
           <tbody><tr *ngFor="let s of filtered"><td>{{ s.serviceId }}</td><td>{{ s.name }}</td><td>{{ s.description | slice:0:50 }}...</td><td>{{ s.price | currencyInr }}</td>
             <td><span class="badge" [class.badge-unavailable]="!s.available">{{ s.available ? 'Yes' : 'No' }}</span></td>
-            <td><button class="btn btn-accent btn-sm" (click)="edit(s)">Edit</button><button class="btn btn-danger btn-sm" (click)="confirmDel(s)" style="margin-left:4px">Delete</button></td>
+            <td><button class="btn btn-accent btn-sm" (click)="edit(s)">Edit</button><button *ngIf="authService.canDeleteCatalog()" class="btn btn-danger btn-sm" (click)="confirmDel(s)" style="margin-left:4px">Delete</button></td>
           </tr></tbody>
         </table></div>
       </div>

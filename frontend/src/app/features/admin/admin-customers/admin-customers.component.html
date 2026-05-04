@@ -29,7 +29,7 @@
       <div class="modal-overlay" *ngIf="showTransactions" (click)="showTransactions=false"><div class="modal-content" style="max-width:600px" (click)="$event.stopPropagation()">
         <div class="modal-header"><h2>Transaction Summary</h2><button class="modal-close" (click)="showTransactions=false">×</button></div>
         <div *ngIf="txSummary">
-          <p><strong>Customer:</strong> {{ txSummary.customerName }}</p>
+          <p><strong>Customer:</strong> {{ txSummary.firstName }} {{ txSummary.lastName }}</p>
           <p><strong>Total Transactions:</strong> {{ txSummary.totalTransactions }}</p>
           <p><strong>Total Amount:</strong> ₹{{ txSummary.totalAmount }}</p>
         </div>

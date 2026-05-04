@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,33 +32,39 @@ public class SupplierController {
     private SupplierService supplierService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     public ResponseEntity<List<SupplierResponseDTO>> getSuppliers() {
         return ResponseEntity.ok(supplierService.getAllSuppliers());
     }
 
     @GetMapping("/{supplierId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE', 'SUPPLIER')")
     public ResponseEntity<SupplierResponseDTO> getSupplierById(@PathVariable Integer supplierId) {
         return ResponseEntity.ok(supplierService.getSupplierById(supplierId));
     }
 
     
     @GetMapping("/{supplierId}/pets")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE') or @authz.isSupplierOwner(#supplierId, authentication)")
     public ResponseEntity<List<PetResponseDTO>> getPetsBySupplier(@PathVariable Integer supplierId) {
         return ResponseEntity.ok(supplierService.getPetsBySupplier(supplierId));
     }
 
     @PutMapping("/{supplierId}")
+    @PreAuthorize("hasRole('ADMIN') or @authz.isSupplierOwner(#supplierId, authentication)")
     public ResponseEntity<SuccessDTO> updateSupplier(@PathVariable Integer supplierId,
                                                      @RequestBody SupplierRequestDTO dto) {
         return ResponseEntity.ok(supplierService.updateSupplier(supplierId, dto));
     }
 
     @DeleteMapping("/{supplierId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SuccessDTO> deleteSupplier(@PathVariable Integer supplierId) {
         return ResponseEntity.ok(supplierService.deleteSupplier(supplierId));
     }
 
     @PostMapping("/{supplierId}/pets/{petId}")
+    @PreAuthorize("hasRole('ADMIN') or @authz.isSupplierOwner(#supplierId, authentication)")
     public ResponseEntity<SuccessDTO> assignPetToSupplier(
             @PathVariable Integer supplierId,
             @PathVariable Integer petId) {
@@ -66,6 +73,7 @@ public class SupplierController {
     }
 
     @DeleteMapping("/{supplierId}/pets/{petId}")
+    @PreAuthorize("hasRole('ADMIN') or @authz.isSupplierOwner(#supplierId, authentication)")
     public ResponseEntity<SuccessDTO> removePetFromSupplier(
             @PathVariable Integer supplierId,
             @PathVariable Integer petId) {
@@ -74,6 +82,7 @@ public class SupplierController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE', 'SUPPLIER')")
     public ResponseEntity<List<SupplierResponseDTO>> searchSupplierByName(
             @RequestParam String name) {
 
@@ -82,6 +91,7 @@ public class SupplierController {
 
    
     @GetMapping("/city")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE', 'SUPPLIER')")
     public ResponseEntity<List<SupplierResponseDTO>> getSuppliersByCity(
             @RequestParam String city) {
 

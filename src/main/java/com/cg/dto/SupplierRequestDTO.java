@@ -1,4 +1,5 @@
 package com.cg.dto;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 public class SupplierRequestDTO 
 {
@@ -20,6 +21,9 @@ public class SupplierRequestDTO
 	    private String email;
 
 	    private Integer addressId;
+	    
+	    @Valid
+	    private AddressesRequestDTO address;
 
 	    public String getName() { return name; }
 	    public void setName(String name) { this.name = name; }
@@ -35,6 +39,9 @@ public class SupplierRequestDTO
 
 	    public Integer getAddressId() { return addressId; }
 	    public void setAddressId(Integer addressId) { this.addressId = addressId; }
+
+	    public AddressesRequestDTO getAddress() { return address; }
+	    public void setAddress(AddressesRequestDTO address) { this.address = address; }
 	
 
 }

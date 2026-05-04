@@ -8,6 +8,9 @@ public class TransactionResponseDTO {
     private LocalDate transactionDate;
     private Double amount;
     private String transactionStatus;
+    private String itemType;
+    private String itemName;
+    private Integer quantity;
 
   
     private CustomersResponseDTO customers;
@@ -24,6 +27,15 @@ public class TransactionResponseDTO {
 		this.transactionStatus = transactionStatus;
 		this.customers = customers;
 		this.pet = pet;
+	}
+
+	public TransactionResponseDTO(Integer transactionId, LocalDate transactionDate, Double amount,
+			String transactionStatus, String itemType, String itemName, Integer quantity,
+			CustomersResponseDTO customers, PetResponseDTO pet) {
+		this(transactionId, transactionDate, amount, transactionStatus, customers, pet);
+		this.itemType = itemType;
+		this.itemName = itemName;
+		this.quantity = quantity;
 	}
 
 	public Integer getTransactionId() {
@@ -56,6 +68,30 @@ public class TransactionResponseDTO {
 
 	public void setTransactionStatus(String transactionStatus) {
 		this.transactionStatus = transactionStatus;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public CustomersResponseDTO getCustomers() {

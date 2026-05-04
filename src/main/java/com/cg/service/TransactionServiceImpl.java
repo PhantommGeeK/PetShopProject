@@ -66,14 +66,20 @@ public class TransactionServiceImpl implements TransactionService {
         		.orElseThrow(() -> new ResourceNotFoundException("Customer", dto.getCustomerId()));
 
         
-        Pet pet = petRepository.findById(dto.getPetId())
-        		.orElseThrow(() -> new ResourceNotFoundException("Pet",dto.getPetId()));
+        Pet pet = null;
+        if (dto.getPetId() != null) {
+            pet = petRepository.findById(dto.getPetId())
+            		.orElseThrow(() -> new ResourceNotFoundException("Pet",dto.getPetId()));
+        }
 
         
         Transaction t = new Transaction();
         t.setTransactionDate(dto.getTransactionDate());
         t.setAmount(dto.getAmount());
         t.setTransactionStatus(dto.getTransactionStatus());
+        t.setItemType(dto.getItemType());
+        t.setItemName(dto.getItemName());
+        t.setQuantity(dto.getQuantity());
         t.setCustomer(customer);
         t.setPet(pet);
 
@@ -103,19 +109,22 @@ public class TransactionServiceImpl implements TransactionService {
         customerDTO.setEmail(t.getCustomer().getEmail());
         customerDTO.setPhoneNumber(t.getCustomer().getPhoneNumber());
 
-        PetResponseDTO petDTO = new PetResponseDTO();
-        petDTO.setPetId(t.getPet().getPetId());
-        petDTO.setName(t.getPet().getName());
-        petDTO.setBreed(t.getPet().getBreed());
-        petDTO.setAge(t.getPet().getAge());
-        petDTO.setPrice(t.getPet().getPrice());
-        petDTO.setDescription(t.getPet().getDescription());
-        petDTO.setImageUrl(t.getPet().getImageUrl());
+        PetResponseDTO petDTO = null;
+        if (t.getPet() != null) {
+            petDTO = new PetResponseDTO();
+            petDTO.setPetId(t.getPet().getPetId());
+            petDTO.setName(t.getPet().getName());
+            petDTO.setBreed(t.getPet().getBreed());
+            petDTO.setAge(t.getPet().getAge());
+            petDTO.setPrice(t.getPet().getPrice());
+            petDTO.setDescription(t.getPet().getDescription());
+            petDTO.setImageUrl(t.getPet().getImageUrl());
 
-        if (t.getPet().getPetCategory() != null) {
-            petDTO.setCategory(
-                PetCategoryResponseDTO.fromEntity(t.getPet().getPetCategory())
-            );
+            if (t.getPet().getPetCategory() != null) {
+                petDTO.setCategory(
+                    PetCategoryResponseDTO.fromEntity(t.getPet().getPetCategory())
+                );
+            }
         }
 
         return new TransactionResponseDTO(
@@ -123,6 +132,9 @@ public class TransactionServiceImpl implements TransactionService {
                 t.getTransactionDate(),
                 t.getAmount(),
                 t.getTransactionStatus(),
+                t.getItemType(),
+                t.getItemName(),
+                t.getQuantity(),
                 customerDTO,
                 petDTO
         );

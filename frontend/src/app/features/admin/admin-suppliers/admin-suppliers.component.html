@@ -6,8 +6,8 @@
           <thead><tr><th>ID</th><th>Name</th><th>Contact</th><th>Email</th><th>Phone</th><th>Actions</th></tr></thead>
           <tbody><tr *ngFor="let s of filtered"><td>{{ s.supplierId }}</td><td>{{ s.name }}</td><td>{{ s.contactPerson }}</td><td>{{ s.email }}</td><td>{{ s.phoneNumber }}</td>
             <td>
-              <button class="btn btn-accent btn-sm" (click)="edit(s)">Edit</button>
-              <button class="btn btn-danger btn-sm" (click)="confirmDel(s)" style="margin-left:4px">Delete</button>
+              <button *ngIf="authService.isAdmin()" class="btn btn-accent btn-sm" (click)="edit(s)">Edit</button>
+              <button *ngIf="authService.isAdmin()" class="btn btn-danger btn-sm" (click)="confirmDel(s)" style="margin-left:4px">Delete</button>
               <button class="btn btn-outline btn-sm" (click)="managePets(s)" style="margin-left:4px">Pets</button>
             </td>
           </tr></tbody>
@@ -30,14 +30,16 @@
         <div class="modal-header"><h2>Supplier Pets</h2><button class="modal-close" (click)="showPetsModal=false">×</button></div>
         <div class="assign-section">
           <div class="form-group" style="margin-bottom:12px">
-            <label>Assign Pet ID</label>
-            <div style="display:flex;gap:8px"><input type="number" [(ngModel)]="assignPetId" style="flex:1"><button class="btn btn-primary btn-sm" (click)="assignPet()">Assign</button></div>
+            <ng-container *ngIf="authService.isAdmin()">
+              <label>Assign Pet ID</label>
+              <div style="display:flex;gap:8px"><input type="number" [(ngModel)]="assignPetId" style="flex:1"><button class="btn btn-primary btn-sm" (click)="assignPet()">Assign</button></div>
+            </ng-container>
           </div>
           <h4 style="margin-bottom:8px">Current Pets:</h4>
           <div *ngIf="supplierPets.length === 0" style="color:var(--color-text-muted);font-size:0.9rem">No pets assigned.</div>
           <div *ngFor="let p of supplierPets" style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--color-border)">
             <span>{{ p.name }} (ID: {{ p.petId }})</span>
-            <button class="btn btn-danger btn-sm" (click)="removePet(p.petId)">Remove</button>
+            <button *ngIf="authService.isAdmin()" class="btn btn-danger btn-sm" (click)="removePet(p.petId)">Remove</button>
           </div>
         </div>
       </div></div>

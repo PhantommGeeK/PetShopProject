@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PetFoodService } from '../../../core/services/pet-food.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { PetFoodResponseDTO, PetFoodRequestDTO } from '../../../core/models/api.models';
 import { CurrencyInrPipe } from '../../../shared/pipes/currency-inr.pipe';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -18,7 +19,7 @@ export class AdminPetFoodComponent implements OnInit {
   editingId: number | null = null; deleteId: number | null = null;
   form: PetFoodRequestDTO = { name: '', brand: '', type: '', quantity: 0, price: 0 };
 
-  constructor(private svc: PetFoodService, private toast: ToastService) {}
+  constructor(private svc: PetFoodService, private toast: ToastService, public authService: AuthService) {}
   ngOnInit(): void { this.load(); }
   load(): void { this.svc.getAll().subscribe({ next: d => { this.items = d; this.filter(); }, error: e => this.toast.handleHttpError(e) }); }
   filter(): void { const t = this.searchTerm.toLowerCase(); this.filtered = this.items.filter(f => f.name.toLowerCase().includes(t) || f.brand.toLowerCase().includes(t)); }
@@ -29,6 +30,7 @@ export class AdminPetFoodComponent implements OnInit {
   }
   edit(f: PetFoodResponseDTO): void { this.openModal(f); }
   save(): void {
+    if (!this.editingId && !this.authService.isAdmin()) return;
     const obs = this.editingId ? this.svc.update(this.editingId, this.form) : this.svc.create(this.form);
     obs.subscribe({ next: () => { this.toast.success('Saved!'); this.showModal = false; this.load(); }, error: e => this.toast.handleHttpError(e) });
   }

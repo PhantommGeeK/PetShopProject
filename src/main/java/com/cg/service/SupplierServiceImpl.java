@@ -14,6 +14,7 @@ import com.cg.dto.SupplierResponseDTO;
 import com.cg.entity.Addresses;
 import com.cg.entity.Pet;
 import com.cg.entity.Supplier;
+import com.cg.exception.InvalidRequestException;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.repo.AddressesRepository;
 import com.cg.repo.PetRepository;
@@ -81,15 +82,36 @@ public class SupplierServiceImpl implements SupplierService {
         supplier.setPhoneNumber(dto.getPhoneNumber());
         supplier.setEmail(dto.getEmail());
 
-        if (dto.getAddressId() != null) {
-            Addresses address = addressRepository.findById(dto.getAddressId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Address", dto.getAddressId()));
+        Addresses address = resolveAddress(dto);
+        if (address != null) {
             supplier.setAddress(address);
         }
 
         supplierRepository.save(supplier);
 
         return new SuccessDTO("Supplier updated successfully");
+    }
+
+    private Addresses resolveAddress(SupplierRequestDTO dto) {
+        if (dto.getAddressId() != null && dto.getAddress() != null) {
+            throw new InvalidRequestException("Provide either addressId or new address details, not both");
+        }
+
+        if (dto.getAddressId() != null) {
+            return addressRepository.findById(dto.getAddressId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Address", dto.getAddressId()));
+        }
+
+        if (dto.getAddress() != null) {
+            Addresses address = new Addresses();
+            address.setStreet(dto.getAddress().getStreet());
+            address.setCity(dto.getAddress().getCity());
+            address.setState(dto.getAddress().getState());
+            address.setZipCode(dto.getAddress().getZipCode());
+            return addressRepository.save(address);
+        }
+
+        return null;
     }
 
     @Override
@@ -112,7 +134,13 @@ public class SupplierServiceImpl implements SupplierService {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet", petId));
 
-        supplier.getPets().add(pet);
+        if (supplier.getPets() == null) {
+            supplier.setPets(new java.util.ArrayList<>());
+        }
+
+        if (!supplier.getPets().contains(pet)) {
+            supplier.getPets().add(pet);
+        }
 
         supplierRepository.save(supplier);
 

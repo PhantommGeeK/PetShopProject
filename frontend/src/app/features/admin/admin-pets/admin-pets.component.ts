@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { PetService } from '../../../core/services/pet.service';
 import { PetCategoryService } from '../../../core/services/pet-category.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { PetResponseDTO, PetRequestDTO, PetCategoryResponseDTO } from '../../../core/models/api.models';
 import { CurrencyInrPipe } from '../../../shared/pipes/currency-inr.pipe';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -22,7 +23,7 @@ export class AdminPetsComponent implements OnInit {
   editingId: number | null = null; deleteId: number | null = null;
   form: PetRequestDTO = { name: '', breed: '', age: 0, price: 0, description: '', imageUrl: '', categoryId: 1 };
 
-  constructor(private petService: PetService, private catService: PetCategoryService, private toast: ToastService) {}
+  constructor(private petService: PetService, private catService: PetCategoryService, private toast: ToastService, public authService: AuthService) {}
   ngOnInit(): void { this.load(); this.catService.getAll().subscribe(c => this.categories = c); }
 
   load(): void { this.petService.getAll().subscribe({ next: d => { this.pets = d; this.filterPets(); }, error: e => this.toast.handleHttpError(e) }); }

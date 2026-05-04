@@ -15,10 +15,19 @@ public class TransactionRequestDTO {
     @NotBlank(message = "Transaction status is required")
     private String transactionStatus;
 
+    @NotBlank(message = "Item type is required")
+    private String itemType;
+
+    @NotBlank(message = "Item name is required")
+    private String itemName;
+
+    @NotNull(message = "Quantity is required")
+    @Positive(message = "Quantity must be greater than 0")
+    private Integer quantity;
+
     @NotNull(message = "Customer ID is required")
     private Integer customerId;
 
-    @NotNull(message = "Pet ID is required")
     private Integer petId;
 
     
@@ -47,6 +56,30 @@ public class TransactionRequestDTO {
 
     public void setTransactionStatus(String transactionStatus) {
         this.transactionStatus = transactionStatus;
+    }
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public Integer getCustomerId() {

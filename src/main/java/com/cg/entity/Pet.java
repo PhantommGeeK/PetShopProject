@@ -36,7 +36,7 @@ public class Pet
 		this.petCategory = petCategory;
 	}
 	private String description;
-	@Column(name = "image_url")
+	@Column(name = "image_url",columnDefinition = "TEXT")
 	private String imageUrl;
 	
 	@ManyToMany(mappedBy = "pets")

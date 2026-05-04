@@ -105,8 +105,11 @@ export interface CustomersRequestDTO {
 
 export interface CustomerTransactionSummaryDTO {
   customerId: number;
-  customerName: string;
+  firstName: string;
+  lastName: string;
+  transactionIds: number[];
   totalTransactions: number;
+  successfulPurchases: number;
   totalAmount: number;
   transactions: TransactionResponseDTO[];
 }
@@ -148,7 +151,8 @@ export interface SupplierRequestDTO {
   contactPerson: string;
   phoneNumber: string;
   email: string;
-  addressId: number;
+  addressId?: number | null;
+  address?: AddressesRequestDTO | null;
 }
 
 // Transaction - backend returns nested objects
@@ -157,16 +161,22 @@ export interface TransactionResponseDTO {
   transactionDate: string;
   amount: number;
   transactionStatus: string;
+  itemType?: string;
+  itemName?: string;
+  quantity?: number;
   customers: CustomersResponseDTO;
-  pet: PetResponseDTO;
+  pet?: PetResponseDTO | null;
 }
 
 export interface TransactionRequestDTO {
   transactionDate: string;
   amount: number;
   transactionStatus: string;
+  itemType: string;
+  itemName: string;
+  quantity: number;
   customerId: number;
-  petId: number;
+  petId?: number | null;
 }
 
 // Auth
@@ -184,6 +194,8 @@ export interface SuccessDTO {
 }
 
 export interface UserInfo {
+  userId?: number;
+  profileId?: number;
   username: string;
   role: string;
 }

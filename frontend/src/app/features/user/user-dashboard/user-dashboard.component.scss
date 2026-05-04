@@ -1,0 +1,150 @@
+.user-dashboard {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+.page-header,
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.page-header {
+  margin-bottom: var(--space-5);
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+.panel,
+.info-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--space-5);
+  padding: var(--space-5);
+}
+
+.panel-header {
+  margin-bottom: var(--space-4);
+}
+
+.panel-header h2 {
+  font-size: 1.25rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.detail-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  min-width: 0;
+}
+
+.detail-item span {
+  color: var(--color-text-muted);
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-bottom: var(--space-1);
+  text-transform: uppercase;
+}
+
+.detail-item strong {
+  overflow-wrap: anywhere;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+.info-panel {
+  color: var(--color-text-muted);
+}
+
+.compact {
+  box-shadow: none;
+  margin-bottom: 0;
+  padding: var(--space-3);
+}
+
+.transaction-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.transaction-table {
+  overflow-x: auto;
+}
+
+.transaction-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.transaction-table th,
+.transaction-table td {
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-3);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.transaction-table th {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.status-pill {
+  background: rgba(67, 160, 71, 0.12);
+  border-radius: var(--radius-pill);
+  color: var(--color-primary);
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: var(--space-1) var(--space-3);
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  .user-dashboard {
+    padding: var(--space-4);
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .transaction-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .span-2 {
+    grid-column: auto;
+  }
+}

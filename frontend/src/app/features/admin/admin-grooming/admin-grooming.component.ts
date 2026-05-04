@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GroomingService } from '../../../core/services/grooming.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { GroomingResponseDTO, GroomingRequestDTO } from '../../../core/models/api.models';
 import { CurrencyInrPipe } from '../../../shared/pipes/currency-inr.pipe';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -18,7 +19,7 @@ export class AdminGroomingComponent implements OnInit {
   editingId: number | null = null; deleteId: number | null = null;
   form: GroomingRequestDTO = { name: '', description: '', price: 0, available: true };
 
-  constructor(private svc: GroomingService, private toast: ToastService) {}
+  constructor(private svc: GroomingService, private toast: ToastService, public authService: AuthService) {}
   ngOnInit(): void { this.load(); }
   load(): void { this.svc.getAll().subscribe({ next: d => { this.items = d; this.filter(); }, error: e => this.toast.handleHttpError(e) }); }
   filter(): void { const t = this.searchTerm.toLowerCase(); this.filtered = this.items.filter(s => s.name.toLowerCase().includes(t)); }

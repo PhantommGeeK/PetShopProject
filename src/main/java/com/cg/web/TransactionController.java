@@ -6,6 +6,7 @@ import com.cg.service.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class TransactionController {
 
     
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE') or @authz.isCustomerOwner(#dto.customerId, authentication)")
     public ResponseEntity<TransactionResponseDTO> create(
             @Valid @RequestBody TransactionRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)

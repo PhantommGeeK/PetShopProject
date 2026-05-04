@@ -2,12 +2,12 @@
       <div class="page-header">
         <h1>Manage Pets</h1>
         <div class="header-actions">
-          <a routerLink="/admin/pet-categories" class="btn btn-outline btn-sm">Categories</a>
+          <a *ngIf="authService.isAdmin()" routerLink="/admin/pet-categories" class="btn btn-outline btn-sm">Categories</a>
           <a routerLink="/admin/pet-food" class="btn btn-outline btn-sm">Food</a>
           <a routerLink="/admin/grooming" class="btn btn-outline btn-sm">Grooming</a>
           <a routerLink="/admin/vaccinations" class="btn btn-outline btn-sm">Vaccinations</a>
-          <a routerLink="/admin/customers" class="btn btn-outline btn-sm">Customers</a>
-          <a routerLink="/admin/employees" class="btn btn-outline btn-sm">Employees</a>
+          <a *ngIf="authService.isAdmin()" routerLink="/admin/customers" class="btn btn-outline btn-sm">Customers</a>
+          <a *ngIf="authService.isAdmin()" routerLink="/admin/employees" class="btn btn-outline btn-sm">Employees</a>
           <a routerLink="/admin/suppliers" class="btn btn-outline btn-sm">Suppliers</a>
           <a routerLink="/admin/transactions" class="btn btn-outline btn-sm">Transactions</a>
         </div>
@@ -24,7 +24,7 @@
                 <td>{{ p.price | currencyInr }}</td><td>{{ p.category?.name || 'N/A' }}</td>
                 <td>
                   <button class="btn btn-accent btn-sm" (click)="editPet(p)">Edit</button>
-                  <button class="btn btn-danger btn-sm" (click)="confirmDel(p)" style="margin-left:4px">Delete</button>
+                  <button *ngIf="authService.canDeleteCatalog()" class="btn btn-danger btn-sm" (click)="confirmDel(p)" style="margin-left:4px">Delete</button>
                 </td>
               </tr>
             </tbody>

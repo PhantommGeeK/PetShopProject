@@ -23,9 +23,17 @@
           <a routerLink="/order" routerLinkActive="active"
              (click)="closeMobile()" id="nav-order">Order</a>
 
-          <ng-container *ngIf="authService.hasAdminAccess()">
+          <ng-container *ngIf="authService.canManageOperations()">
             <a routerLink="/admin/pets" routerLinkActive="active"
-               (click)="closeMobile()" id="nav-admin">Admin</a>
+               (click)="closeMobile()" id="nav-admin">{{ authService.isAdmin() ? 'Admin' : 'Operations' }}</a>
+          </ng-container>
+          <ng-container *ngIf="authService.isSupplier()">
+            <a routerLink="/supplier/dashboard" routerLinkActive="active"
+               (click)="closeMobile()" id="nav-supplier">Supplier</a>
+          </ng-container>
+          <ng-container *ngIf="authService.isLoggedIn$ | async">
+            <a routerLink="/dashboard" routerLinkActive="active"
+               (click)="closeMobile()" id="nav-user-dashboard">My Dashboard</a>
           </ng-container>
         </div>
 
@@ -46,8 +54,11 @@
                 <div class="dropdown-header">
                   <span class="role-badge">{{ getRoleDisplay() }}</span>
                 </div>
-                <a *ngIf="authService.hasAdminAccess()" routerLink="/admin/pets"
+                <a *ngIf="authService.canManageOperations()" routerLink="/admin/pets"
+                   (click)="closeMobile()">{{ authService.isAdmin() ? 'Dashboard' : 'Operations' }}</a>
+                <a *ngIf="authService.isSupplier()" routerLink="/supplier/dashboard"
                    (click)="closeMobile()">Dashboard</a>
+                <a routerLink="/dashboard" (click)="closeMobile()">My Details</a>
                 <a (click)="logout()" id="nav-logout-btn">Logout</a>
               </div>
             </div>
