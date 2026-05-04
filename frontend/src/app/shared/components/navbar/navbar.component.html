@@ -1,68 +1,141 @@
-    <nav class="navbar" [class.scrolled]="isScrolled" id="main-navbar">
-      <div class="nav-inner">
-        <a routerLink="/" class="nav-logo" id="nav-logo">🐾 Pawfect</a>
+<nav class="navbar" [class.scrolled]="isScrolled" id="main-navbar">
+  <div class="nav-inner">
+    <a routerLink="/" class="nav-logo" id="nav-logo">
+      <img
+        src="assets/images/logo-Photoroom.png"
+        alt="Pawfect Logo"
+        class="logo-img"
+      />
+    </a>
 
-        <button class="hamburger" (click)="toggleMobile()" id="nav-hamburger"
-                [class.active]="mobileOpen">
-          <span></span><span></span><span></span>
-        </button>
+    <button
+      class="hamburger"
+      (click)="toggleMobile()"
+      id="nav-hamburger"
+      [class.active]="mobileOpen"
+    >
+      <span></span><span></span><span></span>
+    </button>
 
-        <div class="nav-links" [class.mobile-open]="mobileOpen">
-          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-             (click)="closeMobile()" id="nav-home">Home</a>
-          <a routerLink="/pets" routerLinkActive="active"
-             (click)="closeMobile()" id="nav-shop">Shop</a>
-          <a routerLink="/pet-food" routerLinkActive="active"
-             (click)="closeMobile()" id="nav-food">Pet Food</a>
-          <a routerLink="/grooming" routerLinkActive="active"
-             (click)="closeMobile()" id="nav-grooming">Grooming</a>
-          <a routerLink="/vaccinations" routerLinkActive="active"
-             (click)="closeMobile()" id="nav-vaccinations">Vaccinations</a>
-          <a routerLink="/cart" routerLinkActive="active"
-             (click)="closeMobile()" id="nav-cart">Cart</a>
-          <a routerLink="/order" routerLinkActive="active"
-             (click)="closeMobile()" id="nav-order">Order</a>
+    <div class="nav-links" [class.mobile-open]="mobileOpen">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="closeMobile()"
+        id="nav-home"
+        >Home</a
+      >
+      <a
+        routerLink="/pets"
+        routerLinkActive="active"
+        (click)="closeMobile()"
+        id="nav-shop"
+        >Shop</a
+      >
+      <a
+        routerLink="/pet-food"
+        routerLinkActive="active"
+        (click)="closeMobile()"
+        id="nav-food"
+        >Pet Food</a
+      >
+      <a
+        routerLink="/grooming"
+        routerLinkActive="active"
+        (click)="closeMobile()"
+        id="nav-grooming"
+        >Grooming</a
+      >
+      <a
+        routerLink="/vaccinations"
+        routerLinkActive="active"
+        (click)="closeMobile()"
+        id="nav-vaccinations"
+        >Vaccinations</a
+      >
+      <a
+        routerLink="/cart"
+        routerLinkActive="active"
+        (click)="closeMobile()"
+        id="nav-cart"
+        >Cart</a
+      >
+      <a
+        routerLink="/order"
+        routerLinkActive="active"
+        (click)="closeMobile()"
+        id="nav-order"
+        >Order</a
+      >
 
-          <ng-container *ngIf="authService.canManageOperations()">
-            <a routerLink="/admin/pets" routerLinkActive="active"
-               (click)="closeMobile()" id="nav-admin">{{ authService.isAdmin() ? 'Admin' : 'Operations' }}</a>
-          </ng-container>
-          <ng-container *ngIf="authService.isSupplier()">
-            <a routerLink="/supplier/dashboard" routerLinkActive="active"
-               (click)="closeMobile()" id="nav-supplier">Supplier</a>
-          </ng-container>
-          <ng-container *ngIf="authService.isLoggedIn$ | async">
-            <a routerLink="/dashboard" routerLinkActive="active"
-               (click)="closeMobile()" id="nav-user-dashboard">My Dashboard</a>
-          </ng-container>
-        </div>
+      <ng-container *ngIf="authService.canManageOperations()">
+        <a
+          routerLink="/admin/pets"
+          routerLinkActive="active"
+          (click)="closeMobile()"
+          id="nav-admin"
+          >{{ authService.isAdmin() ? "Admin" : "Operations" }}</a
+        >
+      </ng-container>
+      <ng-container *ngIf="authService.isSupplier()">
+        <a
+          routerLink="/supplier/dashboard"
+          routerLinkActive="active"
+          (click)="closeMobile()"
+          id="nav-supplier"
+          >Supplier</a
+        >
+      </ng-container>
+      <ng-container *ngIf="authService.isLoggedIn$ | async">
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          (click)="closeMobile()"
+          id="nav-user-dashboard"
+          >My Dashboard</a
+        >
+      </ng-container>
+    </div>
 
-        <div class="nav-auth">
-          <ng-container *ngIf="!(authService.isLoggedIn$ | async)">
-            <a routerLink="/login" class="btn-login" id="nav-login-btn">Login</a>
-          </ng-container>
+    <div class="nav-auth">
+      <ng-container *ngIf="!(authService.isLoggedIn$ | async)">
+        <a routerLink="/login" class="btn-login" id="nav-login-btn">Login</a>
+      </ng-container>
 
-          <ng-container *ngIf="authService.isLoggedIn$ | async">
-            <div class="user-menu" (click)="toggleUserMenu()" id="nav-user-menu">
-              <div class="user-avatar">
-                {{ authService.getUsername().charAt(0).toUpperCase() }}
-              </div>
-              <span class="user-name">{{ authService.getUsername() }}</span>
-              <span class="dropdown-arrow">▾</span>
+      <ng-container *ngIf="authService.isLoggedIn$ | async">
+        <div class="user-menu" (click)="toggleUserMenu()" id="nav-user-menu">
+          <div class="user-avatar">
+            {{ authService.getUsername().charAt(0).toUpperCase() }}
+          </div>
+          <span class="user-name">{{ authService.getUsername() }}</span>
+          <span class="dropdown-arrow">▾</span>
 
-              <div class="user-dropdown" *ngIf="userMenuOpen" id="nav-user-dropdown">
-                <div class="dropdown-header">
-                  <span class="role-badge">{{ getRoleDisplay() }}</span>
-                </div>
-                <a *ngIf="authService.canManageOperations()" routerLink="/admin/pets"
-                   (click)="closeMobile()">{{ authService.isAdmin() ? 'Dashboard' : 'Operations' }}</a>
-                <a *ngIf="authService.isSupplier()" routerLink="/supplier/dashboard"
-                   (click)="closeMobile()">Dashboard</a>
-                <a routerLink="/dashboard" (click)="closeMobile()">My Details</a>
-                <a (click)="logout()" id="nav-logout-btn">Logout</a>
-              </div>
+          <div
+            class="user-dropdown"
+            *ngIf="userMenuOpen"
+            id="nav-user-dropdown"
+          >
+            <div class="dropdown-header">
+              <span class="role-badge">{{ getRoleDisplay() }}</span>
             </div>
-          </ng-container>
+            <a
+              *ngIf="authService.canManageOperations()"
+              routerLink="/admin/pets"
+              (click)="closeMobile()"
+              >{{ authService.isAdmin() ? "Dashboard" : "Operations" }}</a
+            >
+            <a
+              *ngIf="authService.isSupplier()"
+              routerLink="/supplier/dashboard"
+              (click)="closeMobile()"
+              >Dashboard</a
+            >
+            <a routerLink="/dashboard" (click)="closeMobile()">My Details</a>
+            <a (click)="logout()" id="nav-logout-btn">Logout</a>
+          </div>
         </div>
-      </div>
-    </nav>
+      </ng-container>
+    </div>
+  </div>
+</nav>

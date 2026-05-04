@@ -9,9 +9,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -61,7 +61,7 @@ public class SecurityConfig
 	                    .requestMatchers(HttpMethod.PUT, "/api/transactions/*/status").hasAnyRole("ADMIN", "EMPLOYEE")
 	                    .requestMatchers("/api/transactions/**").hasRole("ADMIN")
 	                    .requestMatchers("/api/customers/**").hasAnyRole("ADMIN", "EMPLOYEE", "CUSTOMER")
-	                    .requestMatchers("/api/suppliers/**").hasAnyRole("ADMIN", "EMPLOYEE", "SUPPLIER")
+	                    .requestMatchers("/api/suppliers/**").hasAnyRole("ADMIN", "EMPLOYEE","SUPPLIER")
 
 	                    .requestMatchers(HttpMethod.POST, "/api/pets/**").hasAnyRole("ADMIN", "EMPLOYEE")
 	                    .requestMatchers(HttpMethod.PUT, "/api/pets/**").hasAnyRole("ADMIN", "EMPLOYEE")

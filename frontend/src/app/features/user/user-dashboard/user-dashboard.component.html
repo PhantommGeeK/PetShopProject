@@ -40,7 +40,7 @@
         <h2>Profile</h2>
       </div>
 
-      <div class="detail-grid" *ngIf="'firstName' in profile">
+      <div class="detail-grid" *ngIf="isCustomerProfile(profile)">
         <div class="detail-item">
           <span>First Name</span>
           <strong>{{ profile.firstName }}</strong>
@@ -49,11 +49,30 @@
           <span>Last Name</span>
           <strong>{{ profile.lastName }}</strong>
         </div>
-        <div class="detail-item" *ngIf="'position' in profile">
+        <div class="detail-item">
+          <span>Email</span>
+          <strong>{{ profile.email }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Phone Number</span>
+          <strong>{{ profile.phoneNumber }}</strong>
+        </div>
+      </div>
+
+      <div class="detail-grid" *ngIf="isEmployeeProfile(profile)">
+        <div class="detail-item">
+          <span>First Name</span>
+          <strong>{{ profile.firstName }}</strong>
+        </div>
+        <div class="detail-item">
+          <span>Last Name</span>
+          <strong>{{ profile.lastName }}</strong>
+        </div>
+        <div class="detail-item">
           <span>Position</span>
           <strong>{{ profile.position }}</strong>
         </div>
-        <div class="detail-item" *ngIf="'hireDate' in profile">
+        <div class="detail-item">
           <span>Hire Date</span>
           <strong>{{ profile.hireDate }}</strong>
         </div>
@@ -67,7 +86,7 @@
         </div>
       </div>
 
-      <div class="detail-grid" *ngIf="'name' in profile">
+      <div class="detail-grid" *ngIf="isSupplierProfile(profile)">
         <div class="detail-item">
           <span>Name</span>
           <strong>{{ profile.name }}</strong>

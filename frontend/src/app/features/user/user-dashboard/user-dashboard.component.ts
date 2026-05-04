@@ -114,14 +114,26 @@ export class UserDashboardComponent implements OnInit {
     return this.user?.role?.replace('ROLE_', '') || 'USER';
   }
 
+  isCustomerProfile(profile: Profile): profile is CustomersResponseDTO {
+    return this.user?.role === 'ROLE_CUSTOMER' && !!profile;
+  }
+
+  isEmployeeProfile(profile: Profile): profile is EmployeeResponseDTO {
+    return this.user?.role === 'ROLE_EMPLOYEE' && !!profile;
+  }
+
+  isSupplierProfile(profile: Profile): profile is SupplierResponseDTO {
+    return this.user?.role === 'ROLE_SUPPLIER' && !!profile;
+  }
+
   displayName(): string {
     if (!this.profile) return this.user?.username || 'User';
 
-    if ('firstName' in this.profile && 'lastName' in this.profile) {
+    if (this.isCustomerProfile(this.profile) || this.isEmployeeProfile(this.profile)) {
       return `${this.profile.firstName} ${this.profile.lastName}`;
     }
 
-    if ('name' in this.profile) {
+    if (this.isSupplierProfile(this.profile)) {
       return this.profile.name;
     }
 

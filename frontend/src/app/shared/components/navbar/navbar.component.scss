@@ -20,12 +20,33 @@
     }
 
     .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       font-family: var(--font-logo);
       font-size: 1.6rem;
       color: #fff;
       white-space: nowrap;
       text-decoration: none;
+      flex: 0 0 auto;
+      overflow: hidden;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--color-primary);
     }
+
+    .logo-img{
+      width:60px;
+      height: 60px;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 50%;
+      transform: scale(1.08);
+    }
+
+    
 
     .nav-links {
       display: flex;
@@ -205,4 +226,9 @@
       }
 
       .user-name { display: none; }
+
+      .nav-logo {
+        width: 44px;
+        height: 44px;
+      }
     }
